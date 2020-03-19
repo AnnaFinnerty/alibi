@@ -1,33 +1,22 @@
-function generateSuspects(location){
+function generateSuspects(location,c){
     console.log('generating suspects');
     const suspects = {}
-    let victim = null;
+    // let victim = null;
     for(let i = 0; i < 8; i++){
-        let gender, firstName
+        let gender
         if(i<4){
             gender = "female"
-            firstName = randomFromArrayAndRemove(femaleFirstName);
         } else {
             gender = "male"
-            firstName = randomFromArrayAndRemove(maleFirstName);
         }
-        const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
-        const color = randomFromArrayAndRemove(colors)
         let local = false;
         const loc_r = Math.random();
         if(loc_r < .5){
             local = true
         }
-        const victimsPath = i === 0 ? null : victim.locationHistory
-        console.log('victims paths', victimsPath)
-        const locHistory = this.genPath(location,victimsPath);
-        console.log('locHistory', locHistory)
-        const suspect = new Suspect(name,color,locHistory,local);
+        const suspect = makeCharacter(location,c.victim.locationHistory,gender,local);
         console.log('suspect',suspect)
-        if(i === 0){
-            victim = suspect
-        }
-        suspects[name] = suspect
+        suspects[suspect.name] = suspect
     }
     return suspects
 }
@@ -54,7 +43,7 @@ function makeCharacter(location,victimsPath,gender,local){
 
     
 
-    const character = new Suspect(name,color,locHistory),profession;   
+    const character = new Suspect(name,color,locHistory,profession);   
     return character
 }
 

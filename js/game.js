@@ -26,7 +26,7 @@ class Game{
         new DialogueWindow(this.dialogueContainer,this.suspects[test_sub])
         this.startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
-        this.renderer.buildLocation(this.location, this.suspects,this.startHour);
+        this.renderer.buildLocation(this.location, this.suspects,this.case,this.startHour);
         this.playText(this.narrationContainer,this.narration);
     }
     interview = (subject) => {
