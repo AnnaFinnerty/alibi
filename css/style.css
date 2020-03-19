@@ -70,10 +70,10 @@ nav{
 }
 
 #dialogue-container{
-    width: 80vw;
-    height: 10vh;
+    width: 70vw;
+    height: 60vh;
     border: 2px solid black;
-    background: lightgrey;
+    background:rgba(200,200,200,.8);
     position: fixed;
     bottom: 20vh;
     left: 10vw;

@@ -13,11 +13,16 @@ function generateSuspects(location){
         }
         const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
         const color = randomFromArrayAndRemove(colors)
+        let local = false;
+        const loc_r = Math.random();
+        if(loc_r < .5){
+            local = true
+        }
         const victimsPath = i === 0 ? null : victim.locationHistory
         console.log('victims paths', victimsPath)
         const locHistory = this.genPath(location,victimsPath);
         console.log('locHistory', locHistory)
-        const suspect = new Suspect(name,color,locHistory);
+        const suspect = new Suspect(name,color,locHistory,local);
         console.log('suspect',suspect)
         if(i === 0){
             victim = suspect
@@ -27,21 +32,29 @@ function generateSuspects(location){
     return suspects
 }
 
-function makeCharacter(location,victimsPath,gender){
+function makeCharacter(location,victimsPath,gender,local){
     console.log('generating character');
-    gender = gender ? gender : Math.random() < .5 ? "male" : "female";
-    let firstName;
-    if(gender = "female"){
-        firstName = randomFromArrayAndRemove(femaleFirstName);
-    } else {
-        firstName = randomFromArrayAndRemove(maleFirstName);
-    }
-    const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
-    const color = randomFromArrayAndRemove(colors)
+    //generate the characters path from the victims path
     console.log('victims paths', victimsPath)
     const locHistory = this.genPath(location,victimsPath);
     console.log('locHistory', locHistory)
-    const character = new Suspect(name,color,locHistory);   
+
+    gender = gender ? gender : Math.random() < .5 ? "male" : "female";
+    let firstName, profession;
+    if(gender = "female"){
+        firstName = randomFromArrayAndRemove(femaleFirstName);
+        profession = randomFromArray(professionsFemale)
+    } else {
+        firstName = randomFromArrayAndRemove(maleFirstName);
+        profession = randomFromArray(professionsMale)
+    }
+    const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
+    const color = randomFromArrayAndRemove(colors)
+    
+
+    
+
+    const character = new Suspect(name,color,locHistory),profession;   
     return character
 }
 
@@ -82,7 +95,9 @@ function randomStartPosition(location){
 
 const colors = ["firebrick","rebeccapurple",'midnightblue','olive','palevioletred','royalblue','tomato','teal','maroon']
 
-const locationsHere = ["Dunswallow","Albershames"]
+const professionsMale = ["vicar","doctor","gadabout","gambler","banker","MP","gardener"]
+
+const professionsFemale = ["wife","housewife","mother","heiress", "doctor","professor","adventurer"]
 
 const locationsAway = ["China","India","Egypt","Kenya","Greece","Italy","France"]
 

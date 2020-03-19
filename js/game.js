@@ -9,11 +9,11 @@ class Game{
             ["kitchen","staircase","dining room"],
         ]
         const victim = makeCharacter(this.location);
-        this.case = new Case(this.location,victim);
-        this.suspects = generateSuspects(this.location);
+        this.case = new Case(victim);
+        console.log('case',this.case)
+        this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
         this.narration = "You and the inspector have been sent on another case"
-        this.dialogue = "this is test dialogue"
         this.narrationContainer = document.querySelector('#narration-container');
         this.dialogueContainer = document.querySelector('#dialogue-container');
         this.nav = document.querySelector("nav");
@@ -21,10 +21,13 @@ class Game{
     }
     awake = () => {
         console.log('new game')
+        //test code
+        const test_sub = Object.keys(this.suspects)[4]
+        new DialogueWindow(this.dialogueContainer,this.suspects[test_sub])
         this.startHour = Math.floor(Math.random()*13)
-        this.renderer.buildLocation(this.location,this.suspects);
+        this.currentHour = this.startHour + 2;
+        this.renderer.buildLocation(this.location, this.suspects,this.startHour);
         this.playText(this.narrationContainer,this.narration);
-        this.setText(this.dialogueContainer,this.dialogue);
     }
     interview = (subject) => {
         console.log('interviewing: ' + subject)
@@ -35,7 +38,7 @@ class Game{
         }
         this.suspects[subject]['interviews'] += 1;
         //temp code
-        this.dialogueContainer.className = "";
+        new DialogueWindow(this.dialogueContainer,this.suspects[subject])
         this.render();
     }
     searchRoom = (room) => {
