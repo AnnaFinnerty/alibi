@@ -26,7 +26,7 @@ function generateSuspects(location,c){
 }
 
 function makeCharacter(location,victimsPath,isHost,gender,local,site){
-    console.log('generating character');
+    console.log('generating character: ' + gender);
     //generate the characters path from the victims path
     console.log('victims paths', victimsPath)
     const locHistory = this.genPath(location,victimsPath);
