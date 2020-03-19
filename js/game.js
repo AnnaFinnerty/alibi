@@ -9,7 +9,9 @@ class Game{
             ["kitchen","staircase","dining room"],
         ]
         const victim = makeCharacter(this.location);
-        this.case = new Case(victim);
+        const startHour = Math.floor(Math.random()*13)
+        this.currentHour = this.startHour + 2;
+        this.case = new Case(victim,startHour);
         console.log('case',this.case)
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
@@ -40,9 +42,7 @@ class Game{
         //test code
         const test_sub = Object.keys(this.suspects)[4]
         new DialogueWindow(this.dialogueContainer,this.suspects[test_sub])
-        this.startHour = Math.floor(Math.random()*13)
-        this.currentHour = this.startHour + 2;
-        this.renderer.setup(this.locationTracker, this.suspects,this.case,this.startHour);
+        this.renderer.setup(this.case,this.locationTracker, this.suspects);
         this.playText(this.narrationContainer,this.narration);
     }
     view = (subject) => {

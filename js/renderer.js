@@ -6,7 +6,7 @@ class Renderer{
         this.location = null;
         this.locations = {};
     }
-    setup = (location,suspects) => {
+    setup = (mystery,location,suspects) => {
         console.log('building location');
         this.render(location,suspects)
     }
@@ -16,6 +16,9 @@ class Renderer{
         this.emptyContainer(this.suspectContainer);
         this.buildLocation(location)
         this.buildSuspects(suspects)
+    }
+    buildHeader = (mystery) => {
+
     }
     buildLocation = (location) => {
         for(let x = 0; x < location.length; x++){
@@ -28,6 +31,12 @@ class Renderer{
                 room.textContent = location[x][y] === "empty" ? "" : location[x][y]['name'];
                 row.appendChild(room);
                 room.addEventListener('click',(e)=>this.game.searchRoom(e.target.id))
+                if(location[x][y].occupants.length){
+                    const footprint = this.buildObject("div",room,"footprint");
+                }
+                if(location[x][y].clues.length){
+                    const clue = this.buildObject("div",room,"clue");
+                }
             }
             this.locationContainer.appendChild(row)
         }
@@ -46,6 +55,13 @@ class Renderer{
             this.suspectContainer.appendChild(suspect);
             suspect.addEventListener('click',(e)=>this.game.view(e.target.id))
         }
+    }
+    buildObject = (type,container,className,id) => {
+        const obj = document.createElement(type);
+              obj.className = className;
+              obj.id = id
+        container.appendChild(obj)
+        return obj
     }
     emptyContainer = (container) => {
         if(container.firstChild){
