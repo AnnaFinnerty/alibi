@@ -42,8 +42,18 @@ class Game{
         new DialogueWindow(this.dialogueContainer,this.suspects[test_sub])
         this.startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
-        this.renderer.buildLocation(this.locationTracker, this.suspects,this.case,this.startHour);
+        this.renderer.setup(this.locationTracker, this.suspects,this.case,this.startHour);
         this.playText(this.narrationContainer,this.narration);
+    }
+    view = (subject) => {
+        console.log('iviewing: ' + subject)
+        const currentQuestions = questions[this.suspects[subject]['interviews']];
+        // console.log(currentQuestions)
+        for(let i = 0; i < currentQuestions.length; i++){
+            console.log(currentQuestions[i])
+        }
+        //temp code
+        new DialogueWindow(this.dialogueContainer,this.suspects[subject])
     }
     interview = (subject) => {
         console.log('interviewing: ' + subject)

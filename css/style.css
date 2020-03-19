@@ -32,6 +32,18 @@ nav{
     left: 0;
 }
 
+.sidebar{
+    width: 30vw;
+    border-right: .5px solid dimgray;
+    float: left;
+}
+
+.main{
+    background: white;
+    height: 60vh;
+    width: 40vw;
+}
+
 .suspect{
     display: flex;
 }

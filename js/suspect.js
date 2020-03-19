@@ -1,5 +1,5 @@
 class Suspect{
-    constructor(name,color,locationHistory,isHost,local,home,profession,partner){
+    constructor(name,color,locationHistory,isHost,hasSecret,local,home,profession,partner){
         this.name = name;
         this.color = color;
         this.locationHistory = locationHistory;
@@ -8,6 +8,7 @@ class Suspect{
         this.profession = profession;
         this.locationRevealed = false;
         this.isHost = isHost;
+        this.hasSecret = hasSecret;
         this.partner = partner;
         this.guilty = null;
         this.openness = Math.floor(Math.random()*80);

@@ -18,20 +18,20 @@ function generateSuspects(location,c){
                 local = false
             }
         }
-        const suspect = makeCharacter(location,c.victim.locationHistory,isHost,gender,local,c.site);
+        const hasSecret = true;
+        const suspect = makeCharacter(location,c.victim.locationHistory,isHost,hasSecret,gender,local,c.site);
         console.log('suspect',suspect)
         suspects[suspect.name] = suspect
     }
     return suspects
 }
 
-function makeCharacter(location,victimsPath,isHost,gender,local,site){
+function makeCharacter(location,victimsPath,isHost,hasSecret,gender,local,site){
     console.log('generating character: ' + gender);
     //generate the characters path from the victims path
     console.log('victims paths', victimsPath)
     const locHistory = this.genPath(location,victimsPath);
     console.log('locHistory', locHistory)
-
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
     if(gender = "female"){
@@ -44,7 +44,7 @@ function makeCharacter(location,victimsPath,isHost,gender,local,site){
     const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
     const color = randomFromArrayAndRemove(colors)
     const home = local ? site : randomFromArrayAndRemove(locationsAway)
-    const character = new Suspect(name,color,locHistory,isHost,local,home,profession);   
+    const character = new Suspect(name,color,locHistory,isHost,hasSecret,local,home,profession);   
     return character
 }
 
@@ -104,4 +104,5 @@ const maleFirstName = [
     "Tom", "John", "Alfred", "Patrick", "Horace", "Odell", "Stephen", "Kenneth", "Jacko"
 ]
 
+const clues = ['Letter','Handkerchief','Cigarette Lighter','Pipe','Ring','Shoeprint']
 
