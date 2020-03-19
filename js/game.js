@@ -1,7 +1,26 @@
 class Game{
     constructor(){
+        //components
         this.renderer = new Renderer(this);
-        this.isPlayerPlaying = true;
+        this.dialogueManager = new DialogueWindow();
+        //state variables
+        // this.isPlayerPlaying = true;
+        this.currentSuspect = null;
+        
+        //store locations that will be reused multiple times
+        this.narrationContainer = document.querySelector('#narration-container');
+        this.dialogueContainer = document.querySelector('#dialogue-container');
+        this.nav = document.querySelector("nav");
+        
+        //add event listeners
+        //this is a problem event listeners will need to be remove every time -- make buttons?
+        document.querySelector('.close-button').addEventListener('click',this.closeDialogue)
+        document.querySelector('#interview-button').addEventListener('click',this.interview)
+        this.awake();
+    }
+    awake = () => {
+        console.log('new game')
+        //later we'll make a random location
         this.location = [
             ["empty","tower","empty"],
             ["bedroom","staircase","bedroom"],
@@ -32,43 +51,49 @@ class Game{
         }
         this.locationTracker = locationTracker;
         this.narration = "You and the inspector have been sent on another case"
-        this.narrationContainer = document.querySelector('#narration-container');
-        this.dialogueContainer = document.querySelector('#dialogue-container');
-        this.nav = document.querySelector("nav");
-        this.awake();
-    }
-    awake = () => {
-        console.log('new game')
+
         //test code
         const test_sub = Object.keys(this.suspects)[4]
-        new DialogueWindow(this.dialogueContainer,this.suspects[test_sub])
+        this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         this.playText(this.narrationContainer,this.narration);
     }
     view = (subject) => {
         console.log('iviewing: ' + subject)
+        this.currentSuspect = subject;
         const currentQuestions = questions[this.suspects[subject]['interviews']];
         // console.log(currentQuestions)
         for(let i = 0; i < currentQuestions.length; i++){
             console.log(currentQuestions[i])
         }
         //temp code
-        new DialogueWindow(this.dialogueContainer,this.suspects[subject])
+        // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
     }
-    interview = (subject) => {
-        console.log('interviewing: ' + subject)
-        const currentQuestions = questions[this.suspects[subject]['interviews']];
+    interview = () => {
+        console.log('interviewing: ' + this.currentSuspect)
+        const currentQuestions = questions[this.suspects[this.currentSuspect]['interviews']];
         // console.log(currentQuestions)
         for(let i = 0; i < currentQuestions.length; i++){
             console.log(currentQuestions[i])
         }
-        this.suspects[subject]['interviews'] += 1;
+        this.suspects[this.currentSuspect]['interviews'] += 1;
         //temp code
-        new DialogueWindow(this.dialogueContainer,this.suspects[subject])
+        // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
         this.render();
     }
     searchRoom = (room) => {
         console.log('searching room: ' + room)
+    }
+    emit = (event,data) => {
+        
+    }
+    openDialogue = (subject) => {
+        this.dialogueContainer.className = "";
+        const suspect = this.suspects[subject]
+        this.dialogueManager.build(suspect)
+    }
+    closeDialogue = () => {
+        this.dialogueContainer.className = "hidden";
     }
     playText = (container,text) => {
         container.textContent = text; 

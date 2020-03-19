@@ -16,7 +16,27 @@
             <div class="hidden" id="narration-container"></div>
             <div id="location-container"></div>
             <div id="suspect-container"></div>
-            <div class="hidden" id="dialogue-container"></div>  
+            <div class="hidden" id="dialogue-container">
+                <div class="row">
+                    <button class="close-button">X</button>
+                </div>
+                <div class="row">
+                    <div class="sidebar">
+                        <h2 id="suspect-name">Suspect Name</h2>
+                        <span id="suspect-description"></span>
+                        <div class="row">
+                            <div id="suspect-time-1"></div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="buttons">
+                            <button id="interview-button">interview</button>
+                            <button id="accuse-button">accuse</button>
+                        </div>
+                        <div class="panel"></div>
+                    </div>
+                </div>
+            </div>  
         </div>
     </main>
     <script src="js/helpers.js"></script>
