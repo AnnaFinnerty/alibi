@@ -9,18 +9,16 @@ class Renderer{
     buildLocation = (location,suspects) => {
         console.log('building location');
         this.location = location;
-        this.locations = {};
         this.emptyContainer(this.locationContainer);
         for(let x = 0; x < location.length; x++){
             const row = document.createElement('div');
             row.className = "row";
             for(let y = 0; y < location[x].length; y++){
                 const room = document.createElement('div');
-                room.className = "room " + location[x][y];
+                room.className = "room " + location[x][y].name;
                 room.id = location[x][y];
-                room.textContent = location[x][y] === "empty" ? "" : location[x][y];
+                room.textContent = location[x][y] === "empty" ? "" : location[x][y]['name'];
                 row.appendChild(room);
-                this.locations[x+"_"+y] = room;
                 room.addEventListener('click',(e)=>this.game.searchRoom(e.target.id))
             }
             this.locationContainer.appendChild(row)
