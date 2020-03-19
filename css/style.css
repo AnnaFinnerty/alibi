@@ -1,0 +1,97 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+ header{
+    width: 96vw;
+    height: 2vh;
+    background: rgba(1, 15, 15, 0.3);
+    border-bottom-left-radius: 25vw;
+    border-bottom-right-radius: 25vw;
+    position: fixed;
+    top: 0;
+    left: 2vw;
+}
+
+nav{
+    width: 100vw;
+    height: 10vh;
+    border: .5px solid dimgray;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.suspect{
+    display: flex;
+}
+
+.bullet{
+    width: 3vw;
+    height: 3vw;
+    border-radius: 100%;
+    line-height: 4vh;
+    font-size: 2vh;
+    text-align: center;
+    color: white;
+}
+
+#game-container{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top:0;
+    left:0;
+    display: flex;
+}
+
+#location-container,#suspect-container{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin: 30vh auto;
+}
+
+#suspect-container{
+    
+}
+
+#narration-container{
+    width: 60vw;
+    height: 40vh;
+    position: fixed;
+    top: 10vh;
+    left: 20vw;
+    padding: 2vw;
+}
+
+#dialogue-container{
+    width: 80vw;
+    height: 10vh;
+    border: 2px solid black;
+    background: lightgrey;
+    position: fixed;
+    bottom: 20vh;
+    left: 10vw;
+    border-radius: 5vw;
+    padding: 2vw;
+    text-align: center;
+}
+
+.room{
+    width: 7vw;
+    height: 7vw;
+    border: 2px solid black;
+}
+
+.row{
+    display: inline-flex;
+}
+
+.hidden{
+    display: none;
+}
