@@ -1,8 +1,11 @@
 class Suspect{
-    constructor(name,color,locationHistory,isHost,partner){
+    constructor(name,color,locationHistory,isHost,local,home,profession,partner){
         this.name = name;
         this.color = color;
         this.locationHistory = locationHistory;
+        this.local = local;
+        this.home = home;
+        this.profession = profession;
         this.locationRevealed = false;
         this.isHost = isHost;
         this.partner = partner;

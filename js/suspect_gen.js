@@ -3,25 +3,29 @@ function generateSuspects(location,c){
     const suspects = {}
     // let victim = null;
     for(let i = 0; i < 8; i++){
+        const isHost = i === 0
         let gender
         if(i<4){
             gender = "female"
         } else {
             gender = "male"
         }
-        let local = false;
-        const loc_r = Math.random();
-        if(loc_r < .5){
-            local = true
+        let local = true;
+        //the host will always be local
+        if(i > 0){
+            const loc_r = Math.random();
+            if(loc_r < .5){
+                local = false
+            }
         }
-        const suspect = makeCharacter(location,c.victim.locationHistory,gender,local);
+        const suspect = makeCharacter(location,c.victim.locationHistory,isHost,gender,local,c.site);
         console.log('suspect',suspect)
         suspects[suspect.name] = suspect
     }
     return suspects
 }
 
-function makeCharacter(location,victimsPath,gender,local){
+function makeCharacter(location,victimsPath,isHost,gender,local,site){
     console.log('generating character');
     //generate the characters path from the victims path
     console.log('victims paths', victimsPath)
@@ -32,18 +36,15 @@ function makeCharacter(location,victimsPath,gender,local){
     let firstName, profession;
     if(gender = "female"){
         firstName = randomFromArrayAndRemove(femaleFirstName);
-        profession = randomFromArray(professionsFemale)
+        profession = randomFromArrayAndRemove(professionsFemale)
     } else {
         firstName = randomFromArrayAndRemove(maleFirstName);
-        profession = randomFromArray(professionsMale)
+        profession = randomFromArrayAndRemove(professionsMale)
     }
     const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
     const color = randomFromArrayAndRemove(colors)
-    
-
-    
-
-    const character = new Suspect(name,color,locHistory,profession);   
+    const home = local ? site : randomFromArrayAndRemove(locationsAway)
+    const character = new Suspect(name,color,locHistory,isHost,local,home,profession);   
     return character
 }
 
