@@ -34,13 +34,14 @@ class Renderer{
                 room.datay = y;
                 row.appendChild(room);
                 room.addEventListener('click',(e)=>this.game.searchRoom(e.target))
-                // if(location[x][y].occupants.length){
-                //     for(let i = 0; i < location[x][y].occupants.length; i++){
-                //         const footprint = this.buildObject("div",room,"footprint");
-                //         footprint.style.backgroundColor = location[x][y].occupants[i].color
-                //         footprint.textContent = location[x][y].occupants[i].locationHistory.indexOf({x:x,y:y})
-                //     }
-                // }
+                if(location[x][y].occupants.length){
+                    for(let i = 0; i < location[x][y].occupants.length; i++){
+                        // console.log(location[x][y].occupants[i].locationHistory)
+                        const footprint = this.buildObject("div",room,"footprint");
+                        footprint.style.backgroundColor = location[x][y].occupants[i].color
+                        footprint.textContent = location[x][y].occupants[i].locationHistory.indexOf({x: x, y: y})
+                    }
+                }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
                             const clue = this.buildObject("div",room,"clue");    

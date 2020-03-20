@@ -64,7 +64,7 @@ function genPath(location,crossoverPaths){
     // console.log('generating path',crossoverPaths)
     let start;
     if(!crossoverPaths){
-        start = randomStartPosition();
+        start = randomStartPosition(location);
     } else {
         start = crossoverPaths[Math.floor(Math.random()*crossoverPaths.length)]
     }
@@ -100,8 +100,46 @@ function genPath(location,crossoverPaths){
     return [s1, start, s2]
 }
 
+function nextPos(location,currentX,currentY,locationHistory){
+    const possiblePaths = []
+    if(currentX > 0){
+        if(location[currentX-1][currentY] !== "empty"){
+            possiblePaths.push({x:currentX-1,y:currentY})
+        } 
+    }
+    if(currentX < location.length-1){
+        if(location[currentX+1][currentY] !== "empty"){
+            possiblePaths.push({x:currentX+1,y:currentY})
+        } 
+        
+    }
+    if(currentY > 0){
+        if(location[currentX][currentY-1] !== "empty"){
+            possiblePaths.push({x:currentX,y:currentY-1})
+        } 
+    }
+    if(currentY < location[0].length-1){
+        if(location[currentX][currentY+1] !== "empty"){
+            possiblePaths.push({x:currentX,y:currentY+1})
+        } 
+    }
+    possiblePaths = possiblePaths.map((path)=> !locationHistory.includes(path))
+    return randomFromArray(possiblePaths)
+}
+
+const startPositions = []
+
 function randomStartPosition(location){
-    return {x:1,y:2}
+    if(!startPositions.length){
+        for(let x = 0; x < location.length; x++){
+            for(let y = 0; y < location[y].length; y++){
+                if(location[x][y] !== "empty"){
+                    startPositions.push({x:x,y:y})
+                }
+            }
+        }
+    }
+    return randomFromArrayAndRemove(startPositions)
 }
 
 const colors = ["firebrick","rebeccapurple",'midnightblue','olive','palevioletred','royalblue','tomato','teal','maroon']
