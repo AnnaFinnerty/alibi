@@ -65,6 +65,7 @@ class Game{
         this.test();
     }
     test = () => {
+        const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
             for(let i = 0; i < suspect.locationHistory.length; i++){
@@ -73,9 +74,11 @@ class Game{
             }
             if(suspect.clue){
                 const clue = suspect.clue;
+                clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
         }
+        console.log('clues',clues)
         this.render();
     }
     view = (subject) => {

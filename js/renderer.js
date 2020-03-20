@@ -19,11 +19,9 @@ class Renderer{
         this.buildSuspects(suspects)
     }
     buildHeader = (mystery) => {
-        console.log('building header',mystery)
         document.querySelector('#victim-name').textContent = "Victim: " + mystery.victim.name
     }
     buildLocation = (location) => {
-        console.log(location)
         for(let x = 0; x < location.length; x++){
             const row = document.createElement('div');
             row.className = "row";
@@ -44,7 +42,9 @@ class Renderer{
                 //     }
                 // }
                 if(location[x][y].clues.length){
-                    const clue = this.buildObject("div",room,"clue");
+                    for(let i = 0; i < location[x][y].clues.length; i++){
+                            const clue = this.buildObject("div",room,"clue");    
+                        }
                 }
             }
             this.locationContainer.appendChild(row)

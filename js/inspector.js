@@ -1,5 +1,5 @@
 class Inspector{
     constructor(){
-        console.log('inspector running')
+        // console.log('inspector running')
     }
 }
