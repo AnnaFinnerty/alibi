@@ -28,6 +28,7 @@ class Game{
             ["kitchen","staircase","dining room"],
         ]
         const victim = makeCharacter(this.location);
+        
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
         this.case = new Case(victim,startHour);
@@ -50,6 +51,10 @@ class Game{
             locationTracker.push(row)
         }
         this.locationTracker = locationTracker;
+        //add victim to the room
+        //WARNING YOU HARDCODED THIS DUMMY    
+        this.locationTracker[victim.locationHistory[2].x][victim.locationHistory[2].y]['occupants'].push(victim)
+        console.log(this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
         //test code
@@ -57,6 +62,21 @@ class Game{
         this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         this.playText(this.narrationContainer,this.narration);
+        this.test();
+    }
+    test = () => {
+        for(let s in this.suspects){
+            const suspect = this.suspects[s];
+            for(let i = 0; i < suspect.locationHistory.length; i++){
+                const loc = suspect.locationHistory[i];
+                this.locationTracker[loc.x][loc.y]['occupants'].push(suspect);
+            }
+            if(suspect.clue){
+                const clue = suspect.clue;
+                this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
+            }
+        }
+        this.render();
     }
     view = (subject) => {
         console.log('iviewing: ' + subject)
@@ -82,7 +102,27 @@ class Game{
         this.render();
     }
     searchRoom = (room) => {
-        console.log('searching room: ' + room)
+        console.log('searching room: ' + room.id)
+        console.log(room.datax, room.datay)
+        this.locationTracker[room.datax][room.datay]['searched'] = true;
+        const clues = this.searchSuspects(room.datax,room.datay)
+        if(clues.length){
+            console.log('clues found', clues)
+            this.locationTracker[room.datax][room.datay]['clues'] = clues;
+        }
+        this.render();
+    }
+    searchSuspects = (x,y) => {
+        const clues = []
+        for(let s in this.suspects){
+            if(this.suspects[s].clue){
+                if(this.suspects[s].clue.loc.x === x && this.suspects[s].clue.loc.y === y){
+                    console.log('clue found!',this.suspects[s].clue.object);
+                    clues.push(this.suspects[s].clue)
+                }
+            }
+        }
+        return clues
     }
     emit = (event,data) => {
         
@@ -102,6 +142,6 @@ class Game{
         container.textContent = text; 
     }
     render = () => {
-        this.renderer.render(this.location,this.suspects)
+        this.renderer.render(this.locationTracker,this.suspects)
     }
 }
