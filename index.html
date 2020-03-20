@@ -3,23 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash|Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>Mystery Game</title>
 </head>
 <body>
-    <header></header>
+    <nav></nav>
+    <header class="row">
+        <div>
+            <h2 id="victim-name"></h2>
+            <h4 id="victim-crime"></h4>
+            <h4 id="victim-specific"></h4>
+            <h4 id="victim-tod"></h4>
+        </div>
+        <div>
+            <div class="hidden" id="narration-container"></div>
+        </div>
+    </header>
     <main>
         <div id="game-container">
-            <div class="hidden" id="narration-container"></div>
             <div id="location-container"></div>
             <div id="suspect-container"></div>
-            <div class="hidden" id="dialogue-container"></div>  
+            <div class="hidden" id="dialogue-container">
+                <div class="row">
+                    <button class="close-button">X</button>
+                </div>
+                <div class="row">
+                    <div class="sidebar">
+                        <h2 id="suspect-name">Suspect Name</h2>
+                        <span>Profession:</span>
+                        <span id="suspect-profession"></span>
+                        <span>Home:</span>
+                        <span id="suspect-home"></span>
+                        <div class="row">
+                            <div id="suspect-time-1"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="column">
+                        <div class="buttons">
+                            <button id="interview-button">interview</button>
+                            <button id="notes-button">notes</button>
+                            <button id="accuse-button">accuse</button>
+                        </div>
+                        <div class="panel"></div>
+                    </div>
+                </div>
+            </div>  
         </div>
-        <nav>
-            <span>select a room to search or a suspect to question</span>
-            <button>accuse</button>
-            <button>quit</button>
-        </nav>
     </main>
     <script src="js/helpers.js"></script>
     <script src="js/responses.js"></script>
