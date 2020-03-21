@@ -28,6 +28,7 @@ class Game{
             ["kitchen","staircase","dining room"],
         ]
         const victim = makeCharacter(this.location);
+        victim.color = "black"
         
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
@@ -62,9 +63,10 @@ class Game{
         this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         this.playText(this.narrationContainer,this.narration);
-        this.test();
+        // this.test();
     }
     test = () => {
+        const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
             for(let i = 0; i < suspect.locationHistory.length; i++){
@@ -73,9 +75,11 @@ class Game{
             }
             if(suspect.clue){
                 const clue = suspect.clue;
+                clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
         }
+        console.log('clues',clues)
         this.render();
     }
     view = (subject) => {

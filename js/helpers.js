@@ -8,3 +8,19 @@ function randomFromArrayAndRemove(arr){
 function randomFromArray(arr){
     return arr[Math.floor(Math.random()*arr.length)]
 }
+
+function buildObject(type,container,className,id){
+    const obj = document.createElement(type);
+          obj.className = className;
+          obj.id = id
+    container.appendChild(obj)
+    return obj
+}
+
+function emptyContainer(container){
+    if(container.firstChild){
+        while(container.firstChild){
+            container.removeChild(container.firstChild)
+        }
+    }
+}
