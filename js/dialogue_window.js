@@ -2,6 +2,8 @@ class DialogueWindow{
     constructor(mystery){
         this.suspect = null;
         this.panel = "interview"
+
+        //store reused elements
         this.suspectProps = ['name','profession','home']
         this.displayElements = {}
         for(let i = 0; i < this.suspectProps.length; i++){
@@ -10,6 +12,11 @@ class DialogueWindow{
         }
         this.questionPanel = document.querySelector(".questions")
         this.responsePanel = document.querySelector(".responses")
+
+        //event listeners
+        document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
+        document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
+        document.querySelector('#accuse-button').addEventListener('click',()=>this.updatePanel('accuse'))
     }
     build = (suspect) => {
         // console.log('building suspect: ' + suspect)
@@ -19,8 +26,17 @@ class DialogueWindow{
         }
         this.updatePanel();
     }
-    updatePanel = () => {
+    updatePanel = (newPanel) => {
+        this.panel = newPanel ? newPanel : this.panel;
         switch(this.panel){
+
+            case "notes":
+                this.viewNotes();
+                break
+
+            case "accuse":
+                this.accuse();
+                break
 
             default:
                 this.interview();
@@ -48,6 +64,18 @@ class DialogueWindow{
         console.log('suspect responds ' + text)
         const response = buildObject('div',this.responsePanel,'response')
         response.textContent = text;
+    }
+    viewNotes = () => {
+        console.log('viewing notes')
+        this.emptyContainer(this.questionPanel);
+        const header = buildObject('div',this.questionPanel)
+        header.textContent = "NOTES"
+    }
+    accuse = () => {
+        console.log('j\'accuse')
+        this.emptyContainer(this.questionPanel);
+        const header = buildObject('div',this.questionPanel)
+        header.textContent = "I accuse yoU!"
     }
     close = () => {
         return this.suspect
