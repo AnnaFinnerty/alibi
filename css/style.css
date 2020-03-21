@@ -59,6 +59,23 @@ header{
     width: 40vw;
 }
 
+.questions,.responses{
+    width: 100%;
+    height: 24vh;
+}
+
+.questions{
+    border-bottom: .5px solid gray;
+}
+
+.question-unasked{
+
+}
+
+.question-asked{
+    
+}
+
 .suspect{
     display: flex;
 }

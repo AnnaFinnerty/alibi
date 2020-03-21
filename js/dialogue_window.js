@@ -9,6 +9,7 @@ class DialogueWindow{
             this.displayElements[this.suspectProps[i]] = el
         }
         this.questionPanel = document.querySelector(".questions")
+        this.responsePanel = document.querySelector(".responses")
     }
     build = (suspect) => {
         // console.log('building suspect: ' + suspect)
@@ -27,6 +28,7 @@ class DialogueWindow{
     }
     interview = () => {
         console.log('interviewing');
+        emptyContainer(this.questionPanel)
         //start on a different row of questions depending on how many times the suspect has been interviews
         const startRow = this.suspect.interviews % questions.length;
         //only show three questions per interview
@@ -34,12 +36,18 @@ class DialogueWindow{
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
             const q = buildObject('div',this.questionPanel,'question')
             q.textContent = nextQuestion
-            q.datai = i;
-            q.addEventListener('click',this.askQuestion)
+            q.datar = startRow+i;
+            q.addEventListener('click',(e)=>this.askQuestion(e))
         }
     }
-    askQuestion = (i,j) => {
+    askQuestion = (e) => {
         console.log('asking question')
+        this.questionPanel.removeChild(e.target)
+        this.responsePanel.appendChild(e.target)
+        const text = this.suspect.response(e.target.datar)
+        console.log('suspect responds ' + text)
+        const response = buildObject('div',this.responsePanel,'response')
+        response.textContent = text;
     }
     close = () => {
         return this.suspect
