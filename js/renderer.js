@@ -13,8 +13,8 @@ class Renderer{
     }
     render = (location,suspects) => {
         //rerender location and suspects
-        this.emptyContainer(this.locationContainer);
-        this.emptyContainer(this.suspectContainer);
+        emptyContainer(this.locationContainer);
+        emptyContainer(this.suspectContainer);
         this.buildLocation(location)
         this.buildSuspects(suspects)
     }
@@ -66,13 +66,6 @@ class Renderer{
             suspect.appendChild(bullet);
             this.suspectContainer.appendChild(suspect);
             suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
-        }
-    }
-    emptyContainer = (container) => {
-        if(container.firstChild){
-            while(container.firstChild){
-                container.removeChild(container.firstChild)
-            }
         }
     }
 }

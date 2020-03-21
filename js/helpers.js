@@ -16,3 +16,11 @@ function buildObject(type,container,className,id){
     container.appendChild(obj)
     return obj
 }
+
+function emptyContainer(container){
+    if(container.firstChild){
+        while(container.firstChild){
+            container.removeChild(container.firstChild)
+        }
+    }
+}
