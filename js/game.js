@@ -159,12 +159,6 @@ class Game{
         this.message.className = "hidden"
         emptyContainer(this.message);
     }
-    playText = (container,text) => {
-        container.textContent = text; 
-    }
-    setText = (container,text) => {
-        container.textContent = text; 
-    }
     render = () => {
         this.renderer.render(this.locationTracker,this.suspects)
     }

@@ -24,3 +24,7 @@ function emptyContainer(container){
         }
     }
 }
+
+function playText(container,text){
+    container.textContent = text; 
+}
