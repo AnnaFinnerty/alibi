@@ -2,7 +2,7 @@ class Game{
     constructor(){
         //components
         this.renderer = new Renderer(this);
-        this.dialogueManager = new DialogueWindow();
+        this.dialogueManager = null;
         //state variables
         // this.isPlayerPlaying = true;
         this.currentSuspect = null;
@@ -34,6 +34,9 @@ class Game{
         this.currentHour = this.startHour + 2;
         this.case = new Case(victim,startHour);
         console.log('case',this.case)
+
+        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue);
+
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
         const locationTracker = [];
@@ -138,6 +141,8 @@ class Game{
     }
     closeDialogue = () => {
         this.dialogueContainer.className = "hidden";
+        const updatedSuspect = this.dialogueManager.close();
+        this.suspects[updatedSuspect.name] = updatedSuspect;
     }
     playText = (container,text) => {
         container.textContent = text; 

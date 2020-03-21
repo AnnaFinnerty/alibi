@@ -32,10 +32,10 @@ class Suspect{
             //interview over. all questions asked. reset for next interview
             this.interviews++;
             this.questionsInInterview = [0,0,0];
-            return "I won't answer any more questions"
+            return {text:"I won't answer any more questions",status:null}
         } else {
             this.questionsInInterview[questionNum] = 1;
-            return "I don't know"
+            return {text:"I don't know",status:1}
         }
     }
     addNote(note){

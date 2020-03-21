@@ -5,6 +5,7 @@ body{
     padding: 0;
     overflow: hidden;
     font-family: 'Raleway', sans-serif;
+    background: rgb(252, 233, 210);
 }
 
 button{
@@ -107,7 +108,7 @@ header{
 }
 
 #suspect-container{
-    
+    border: .25px solid dimgray;
 }
 
 #narration-container{
@@ -119,8 +120,19 @@ header{
     padding: 2vw;
 }
 
+#message{
+    border: 3px double black;
+    width: 40vw;
+    height: 60vh;
+    background: bisque;
+    position: fixed;
+    z-index: 100;
+    margin: 0 30vw;
+}
+
 .close-button{
-    justify-self: right;
+    position: relative;
+    float: left;
 }
 
 .empty-room, .room{

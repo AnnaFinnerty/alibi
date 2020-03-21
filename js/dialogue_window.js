@@ -1,5 +1,7 @@
 class DialogueWindow{
-    constructor(mystery){
+    constructor(mystery,callback){
+        this.mystery = mystery;
+        this.callback = callback;
         this.suspect = null;
         this.panel = "interview"
 
@@ -28,8 +30,8 @@ class DialogueWindow{
     }
     updatePanel = (newPanel) => {
         this.panel = newPanel ? newPanel : this.panel;
-        this.emptyContainer(this.questionPanel);
-        this.emptyContainer(this.responsePanel);
+        emptyContainer(this.questionPanel);
+        emptyContainer(this.responsePanel);
         switch(this.panel){
 
             case "notes":
@@ -46,7 +48,6 @@ class DialogueWindow{
     }
     interview = () => {
         console.log('interviewing');
-        emptyContainer(this.questionPanel)
         //start on a different row of questions depending on how many times the suspect has been interviews
         const startRow = this.suspect.interviews % questions.length;
         //only show three questions per interview
@@ -64,11 +65,15 @@ class DialogueWindow{
         this.responsePanel.appendChild(e.target)
         console.log('detective asks: ' + e.target.textContent)
         this.suspect.addNote(e.target.textContent);
-        const text = this.suspect.response(e.target.datar)
-        console.log('suspect responds ' + text)
-        this.suspect.addNote(text);
+        const suspectResponse = this.suspect.response(e.target.datar)
+        console.log('suspect responds ' + suspectResponse)
+        this.suspect.addNote(suspectResponse.text);
         const response = buildObject('div',this.responsePanel,'response')
-        response.textContent = text;
+        response.textContent = suspectResponse.text;
+        if(!suspectResponse.status){
+            console.log('the window should close')
+            this.callback();
+        }
     }
     viewNotes = () => {
         console.log('viewing notes')
