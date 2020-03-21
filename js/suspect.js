@@ -19,9 +19,9 @@ class Suspect{
         this.openness = Math.floor(Math.random()*80);
         this.guilt = Math.floor(Math.random()*80);
         this.interviews = 0;
-        this.answered = [0,0,0,0,0,0,0]
+        this.answers = new Array(questions.length).fill(0)
     }
-    response(){
+    response(question){
         return "I don't know"
     }
 }

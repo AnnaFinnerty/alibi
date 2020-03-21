@@ -27,8 +27,19 @@ class DialogueWindow{
     }
     interview = () => {
         console.log('interviewing');
-        const q = questions[0][0];
-        this.questionPanel.textContent = q;
+        //start on a different row of questions depending on how many times the suspect has been interviews
+        const startRow = this.suspect.interviews % questions.length;
+        //only show three questions per interview
+        for(let i = 0; i < 3; i++){
+            const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
+            const q = buildObject('div',this.questionPanel,'question')
+            q.textContent = nextQuestion
+            q.datai = i;
+            q.addEventListener('click',this.askQuestion)
+        }
+    }
+    askQuestion = (i,j) => {
+        console.log('asking question')
     }
     close = () => {
         return this.suspect
