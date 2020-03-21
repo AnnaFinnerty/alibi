@@ -12,8 +12,8 @@ class DialogueWindow{
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
             this.displayElements[this.suspectProps[i]] = el
         }
-        this.questionPanel = document.querySelector(".questions")
-        this.responsePanel = document.querySelector(".responses")
+        this.questionPanel = document.querySelector("#questions")
+        this.responsePanel = document.querySelector("#responses")
 
         //event listeners
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
@@ -35,14 +35,20 @@ class DialogueWindow{
         switch(this.panel){
 
             case "notes":
+                this.questionPanel.className = "full-panel";
+                this.responsePanel.className = "hidden";
                 this.viewNotes();
                 break
 
             case "accuse":
+                this.questionPanel.className = "full-panel";
+                this.responsePanel.className = "hidden";
                 this.accuse();
                 break
 
             default:
+                this.questionPanel.className = "half-panel";
+                this.responsePanel.className = "half-panel";
                 this.interview();
         }
     }
@@ -53,7 +59,7 @@ class DialogueWindow{
         //only show three questions per interview
         for(let i = 0; i < 3; i++){
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
-            const q = buildObject('div',this.questionPanel,'question')
+            const q = buildObject('div',this.questionPanel,'question-unasked')
             q.textContent = nextQuestion
             q.datar = startRow+i;
             q.addEventListener('click',(e)=>this.askQuestion(e))
@@ -63,6 +69,7 @@ class DialogueWindow{
         console.log('asking question')
         this.questionPanel.removeChild(e.target)
         this.responsePanel.appendChild(e.target)
+        e.target.className = 'question-asked';
         console.log('detective asks: ' + e.target.textContent)
         this.suspect.addNote(e.target.textContent);
         const suspectResponse = this.suspect.response(e.target.datar)

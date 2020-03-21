@@ -88,29 +88,6 @@ class Game{
         console.log('clues',clues)
         this.render();
     }
-    // view = (subject) => {
-    //     console.log('iviewing: ' + subject)
-    //     this.currentSuspect = subject;
-    //     const currentQuestions = questions[this.suspects[subject]['interviews']];
-    //     // console.log(currentQuestions)
-    //     for(let i = 0; i < currentQuestions.length; i++){
-    //         console.log(currentQuestions[i])
-    //     }
-    //     //temp code
-    //     // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
-    // }
-    // interview = () => {
-    //     console.log('interviewing: ' + this.currentSuspect)
-    //     const currentQuestions = questions[this.suspects[this.currentSuspect]['interviews']];
-    //     // console.log(currentQuestions)
-    //     for(let i = 0; i < currentQuestions.length; i++){
-    //         console.log(currentQuestions[i])
-    //     }
-    //     this.suspects[this.currentSuspect]['interviews'] += 1;
-    //     //temp code
-    //     // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
-    //     this.render();
-    // }
     searchRoom = (room) => {
         console.log('searching room: ' + room.id)
         console.log(room.datax, room.datay)
