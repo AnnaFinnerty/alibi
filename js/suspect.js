@@ -20,7 +20,8 @@ class Suspect{
         this.guilt = Math.floor(Math.random()*80);
         this.interviews = 0;
         this.questionsInInterview = [0,0,0];
-        this.answers = new Array(questions.length).fill(0)
+        this.answers = new Array(questions.length).fill(0);
+        this.notes = [];
     }
     response(questionRow){
         console.log(this.name + "  is responding")
@@ -36,5 +37,8 @@ class Suspect{
             this.questionsInInterview[questionNum] = 1;
             return "I don't know"
         }
+    }
+    addNote(note){
+        this.notes.push(note)
     }
 }

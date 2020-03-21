@@ -28,6 +28,8 @@ class DialogueWindow{
     }
     updatePanel = (newPanel) => {
         this.panel = newPanel ? newPanel : this.panel;
+        this.emptyContainer(this.questionPanel);
+        this.emptyContainer(this.responsePanel);
         switch(this.panel){
 
             case "notes":
@@ -60,16 +62,22 @@ class DialogueWindow{
         console.log('asking question')
         this.questionPanel.removeChild(e.target)
         this.responsePanel.appendChild(e.target)
+        console.log('detective asks: ' + e.target.textContent)
+        this.suspect.addNote(e.target.textContent);
         const text = this.suspect.response(e.target.datar)
         console.log('suspect responds ' + text)
+        this.suspect.addNote(text);
         const response = buildObject('div',this.responsePanel,'response')
         response.textContent = text;
     }
     viewNotes = () => {
         console.log('viewing notes')
-        this.emptyContainer(this.questionPanel);
         const header = buildObject('div',this.questionPanel)
-        header.textContent = "NOTES"
+        header.textContent = "NOTES";
+        for(let i = 0; i < this.suspect.notes.length; i++){
+            const note = buildObject('div',this.questionPanel)
+            note.textContent = this.suspect.notes[i]
+        }
     }
     accuse = () => {
         console.log('j\'accuse')
