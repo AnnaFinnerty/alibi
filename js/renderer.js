@@ -39,7 +39,7 @@ class Renderer{
                         // console.log(location[x][y].occupants[i].locationHistory)
                         const footprint = this.buildObject("div",room,"footprint");
                         footprint.style.backgroundColor = location[x][y].occupants[i].color
-                        footprint.textContent = location[x][y].occupants[i].locationHistory.indexOf({x: x, y: y})
+                        footprint.textContent = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y)
                     }
                 }
                 if(location[x][y].clues.length){

@@ -3,6 +3,10 @@ class Suspect{
         this.name = name;
         this.color = color;
         this.locationHistory = locationHistory;
+        this.locationTimes = [];
+        for(let i = 0; i < locationHistory.length; i++){
+            this.locationTimes.push(locationHistory[i].x + "_" +locationHistory[i].y)
+        }
         this.local = local;
         this.home = home;
         this.profession = profession;
