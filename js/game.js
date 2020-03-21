@@ -28,6 +28,7 @@ class Game{
             ["kitchen","staircase","dining room"],
         ]
         const victim = makeCharacter(this.location);
+        victim.color = "black"
         
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
@@ -62,7 +63,7 @@ class Game{
         this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         this.playText(this.narrationContainer,this.narration);
-        this.test();
+        // this.test();
     }
     test = () => {
         const clues = []

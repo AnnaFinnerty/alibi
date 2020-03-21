@@ -1,14 +1,14 @@
 class DialogueWindow{
     constructor(mystery){
         this.suspect = null;
-        this.panel = "view"
+        this.panel = "interview"
         this.suspectProps = ['name','profession','home']
         this.displayElements = {}
         for(let i = 0; i < this.suspectProps.length; i++){
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
             this.displayElements[this.suspectProps[i]] = el
         }
-        this.displayPanel = document.querySelector(".panel")
+        this.questionPanel = document.querySelector(".questions")
     }
     build = (suspect) => {
         // console.log('building suspect: ' + suspect)
@@ -19,7 +19,16 @@ class DialogueWindow{
         this.updatePanel();
     }
     updatePanel = () => {
+        switch(this.panel){
 
+            default:
+                this.interview();
+        }
+    }
+    interview = () => {
+        console.log('interviewing');
+        const q = questions[0][0];
+        this.questionPanel.textContent = q;
     }
     close = () => {
         return this.suspect

@@ -20,6 +20,7 @@ class Renderer{
     }
     buildHeader = (mystery) => {
         document.querySelector('#victim-name').textContent = "Victim: " + mystery.victim.name
+        document.querySelector('#victim-site').textContent = mystery.site
     }
     buildLocation = (location) => {
         for(let x = 0; x < location.length; x++){
@@ -37,14 +38,15 @@ class Renderer{
                 if(location[x][y].occupants.length){
                     for(let i = 0; i < location[x][y].occupants.length; i++){
                         // console.log(location[x][y].occupants[i].locationHistory)
-                        const footprint = this.buildObject("div",room,"footprint");
+                        const footprint = buildObject("div",room,"footprint");
                         footprint.style.backgroundColor = location[x][y].occupants[i].color
-                        footprint.textContent = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y)
+                        //don't set the time signal for the victim
+                        footprint.textContent = location[x][y].occupants[i].color === "black" ? "" : location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y)
                     }
                 }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
-                            const clue = this.buildObject("div",room,"clue");    
+                            const clue = buildObject("div",room,"clue");    
                         }
                 }
             }
@@ -65,13 +67,6 @@ class Renderer{
             this.suspectContainer.appendChild(suspect);
             suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
         }
-    }
-    buildObject = (type,container,className,id) => {
-        const obj = document.createElement(type);
-              obj.className = className;
-              obj.id = id
-        container.appendChild(obj)
-        return obj
     }
     emptyContainer = (container) => {
         if(container.firstChild){
