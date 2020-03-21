@@ -25,6 +25,6 @@ function emptyContainer(container){
     }
 }
 
-function playText(container,text){
+function playText(container,text,wordDelay,longDelay){
     container.textContent = text; 
 }

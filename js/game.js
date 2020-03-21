@@ -67,8 +67,8 @@ class Game{
         const test_sub = Object.keys(this.suspects)[4]
         this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
-        this.playText(this.narrationContainer,this.narration);
-        this.openMessage('Welcome to the mystery')
+        
+        // this.openMessage('Welcome to the mystery')
         // this.test();
     }
     test = () => {
@@ -134,9 +134,6 @@ class Game{
         }
         return clues
     }
-    emit = (event,data) => {
-        
-    }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
         const suspect = this.suspects[subject]
@@ -146,6 +143,7 @@ class Game{
         this.dialogueContainer.className = "hidden";
         const updatedSuspect = this.dialogueManager.close();
         this.suspects[updatedSuspect.name] = updatedSuspect;
+        this.render();
     }
     openMessage = (textArray) => {
         emptyContainer(this.message);
