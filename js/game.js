@@ -2,7 +2,7 @@ class Game{
     constructor(){
         //components
         this.renderer = new Renderer(this);
-        this.dialogueManager = new DialogueWindow();
+        this.dialogueManager = null;
         //state variables
         // this.isPlayerPlaying = true;
         this.currentSuspect = null;
@@ -11,6 +11,8 @@ class Game{
         this.narrationContainer = document.querySelector('#narration-container');
         this.dialogueContainer = document.querySelector('#dialogue-container');
         this.nav = document.querySelector("nav");
+
+        this.message = document.querySelector('#message');
         
         //add event listeners
         //this is a problem event listeners will need to be remove every time -- make buttons?
@@ -34,6 +36,9 @@ class Game{
         this.currentHour = this.startHour + 2;
         this.case = new Case(victim,startHour);
         console.log('case',this.case)
+
+        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant);
+
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
         const locationTracker = [];
@@ -62,7 +67,8 @@ class Game{
         const test_sub = Object.keys(this.suspects)[4]
         this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
-        this.playText(this.narrationContainer,this.narration);
+        
+        // this.openMessage('Welcome to the mystery')
         // this.test();
     }
     test = () => {
@@ -80,29 +86,6 @@ class Game{
             }
         }
         console.log('clues',clues)
-        this.render();
-    }
-    view = (subject) => {
-        console.log('iviewing: ' + subject)
-        this.currentSuspect = subject;
-        const currentQuestions = questions[this.suspects[subject]['interviews']];
-        // console.log(currentQuestions)
-        for(let i = 0; i < currentQuestions.length; i++){
-            console.log(currentQuestions[i])
-        }
-        //temp code
-        // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
-    }
-    interview = () => {
-        console.log('interviewing: ' + this.currentSuspect)
-        const currentQuestions = questions[this.suspects[this.currentSuspect]['interviews']];
-        // console.log(currentQuestions)
-        for(let i = 0; i < currentQuestions.length; i++){
-            console.log(currentQuestions[i])
-        }
-        this.suspects[this.currentSuspect]['interviews'] += 1;
-        //temp code
-        // new DialogueWindow(this.dialogueContainer,this.suspects[subject])
         this.render();
     }
     searchRoom = (room) => {
@@ -128,8 +111,10 @@ class Game{
         }
         return clues
     }
-    emit = (event,data) => {
-        
+    addOccupant = (x,y,suspect) => {
+        console.log('occupant revealed in room!')
+        this.locationTracker[x][y]['occupants'].push(suspect);
+        this.render();
     }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
@@ -138,12 +123,21 @@ class Game{
     }
     closeDialogue = () => {
         this.dialogueContainer.className = "hidden";
+        const updatedSuspect = this.dialogueManager.close();
+        this.suspects[updatedSuspect.name] = updatedSuspect;
+        this.render();
     }
-    playText = (container,text) => {
-        container.textContent = text; 
+    openMessage = (textArray) => {
+        emptyContainer(this.message);
+        this.message.className = "";
+        for(let i = 0; i < textArray.length; i++){
+            const para = buildObject('span',this.message)
+            para.textContent = textArray[i]
+        }
     }
-    setText = (container,text) => {
-        container.textContent = text; 
+    closeMessage = () => {
+        this.message.className = "hidden"
+        emptyContainer(this.message);
     }
     render = () => {
         this.renderer.render(this.locationTracker,this.suspects)

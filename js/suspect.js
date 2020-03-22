@@ -16,25 +16,39 @@ class Suspect{
         this.clue = clue;
         this.partner = partner;
         this.guilty = null;
-        this.openness = Math.floor(Math.random()*80);
-        this.guilt = Math.floor(Math.random()*80);
+        this.openness = hasSecret ? Math.floor(Math.random()*50)+20 : Math.floor(Math.random()*60)+40;
+        // this.guilt = Math.floor(Math.random()*80);
         this.interviews = 0;
         this.questionsInInterview = [0,0,0];
-        this.answers = new Array(questions.length).fill(0)
+        this.answers = new Array(questions.length).fill(0);
+        this.notes = [];
     }
     response(questionRow){
         console.log(this.name + "  is responding")
         //find the number of questions already answered in this interview
         const questionNum = this.questionsInInterview.reduce((a, b) => a + b, 0)
-        if(questionNum >= 2){
-            console.log('interview over, all questions asked in round')
-            //interview over. all questions asked. reset for next interview
+        console.log('questionNum', questionNum)
+        if(questionNum === 2){
+            //answering last question in round
+            this.questionsInInterview[questionNum] += 1;
+            const responds = Math.random() > .5 && this.openness > 30
+            const text = responds ? "I'm happy to tell you" : "I don't know";
+            return {text:text,status:100}
+        } else if (questionNum === 3) {
+            //answering to follow up for more questions
+            //interview over. reset for next interview
             this.interviews++;
             this.questionsInInterview = [0,0,0];
-            return "I won't answer any more questions"
+            return {text:"I won't answer any more questions",status:null}
         } else {
-            this.questionsInInterview[questionNum] = 1;
-            return "I don't know"
+            this.questionsInInterview[questionNum] += 1;
+            const responds = Math.random() > .5 && this.openness > 30
+            const text = responds ? "I'm happy to tell you" : "I don't know";
+            const status = responds ? 400 : 200;
+            return {text:text,status:status}
         }
+    }
+    addNote(note){
+        this.notes.push(note)
     }
 }

@@ -191,7 +191,7 @@ function randomStartPosition(location){
     return randomFromArrayAndRemove(startPositions)
 }
 
-const colors = ["firebrick","rebeccapurple",'midnightblue','olive','palevioletred','royalblue','tomato','teal','maroon']
+const colors = ["crimson","darkorchid",'midnightblue','olive', 'palevioletred','royalblue','tomato','teal','darkgoldenrod','indigo']
 
 const professionsMale = ["vicar","doctor","gadabout","gambler","banker","MP","gardener"]
 
