@@ -37,7 +37,7 @@ class Game{
         this.case = new Case(victim,startHour);
         console.log('case',this.case)
 
-        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue);
+        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant);
 
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
@@ -110,6 +110,11 @@ class Game{
             }
         }
         return clues
+    }
+    addOccupant = (x,y,suspect) => {
+        console.log('occupant revealed in room!')
+        this.locationTracker[x][y]['occupants'].push(suspect);
+        this.render();
     }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";

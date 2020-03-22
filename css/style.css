@@ -32,6 +32,7 @@ header{
     width: 100vw;
     height: 20vh;
     border-bottom: .5px solid dimgray;
+    padding: 2vw;
 }
 
 #dialogue-container{
@@ -95,9 +96,18 @@ header{
 }
 
 .suspect{
+    border: .5px solid gray;
+    border-radius: 100vw;
+    margin: .5vw;
+    padding: .2vw;
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.suspect:hover{
+    background-color: rgb(122, 2, 2);
+    color: white;
 }
 
 .bullet{
@@ -128,7 +138,6 @@ header{
 
 #suspect-container{
     border: .25px solid dimgray;
-    padding: 2vw;
 }
 
 #narration-container{

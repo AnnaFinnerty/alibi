@@ -1,9 +1,10 @@
 class DialogueWindow{
-    constructor(mystery,callback){
+    constructor(mystery,closeCallback,addOccupantCallback){
         this.mystery = mystery;
-        this.callback = callback;
+        this.closeCallback = closeCallback;
+        this.addOccupantCallback = addOccupantCallback;
         this.suspect = null;
-        this.panel = "interview"
+        this.panel = "interview";
 
         //store reused elements
         this.suspectProps = ['name','profession','home']
@@ -54,19 +55,23 @@ class DialogueWindow{
     }
     interview = () => {
         console.log('interviewing');
+        const header = buildObject('div',this.questionPanel)
+        header.textContent = "Interview: " + (this.suspect.interviews+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
         const startRow = this.suspect.interviews % questions.length;
         //only show three questions per interview
         for(let i = 0; i < 3; i++){
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
-            const q = buildObject('div',this.questionPanel,'question-unasked')
+            const q = buildObject('div',this.questionPanel,'question-unasked',i)
             q.textContent = nextQuestion
-            q.datar = startRow+i;
+            // q.datax = startRow+i;
             q.addEventListener('click',(e)=>this.askQuestion(e))
         }
     }
     askQuestion = (e) => {
         console.log('asking question')
+        // const questionRow = e.target.datax;
+        const questionRow = e.target.id;
         this.questionPanel.removeChild(e.target)
         this.responsePanel.appendChild(e.target)
         e.target.className = 'question-asked';
@@ -78,8 +83,24 @@ class DialogueWindow{
         const response = buildObject('div',this.responsePanel,'response')
         response.textContent = suspectResponse.text;
         if(!suspectResponse.status){
+            //suspect refuses to respond further. 
+            ///Close the window and update suspect.
             console.log('the window should close')
-            this.callback();
+            this.closeCallback();
+        } else if(suspectResponse.status === 100){
+            //suspect has answered all questions. follow-up?
+            const q1 = buildObject('div',this.questionPanel,'question-unasked')
+            q1.textContent = "Thanks for your time"
+            q1.addEventListener('click',(e)=>this.askQuestion(e))
+            const q2 = buildObject('div',this.questionPanel,'question-unasked')
+            q2.textContent = "Will you answer more questions?"
+            q2.addEventListener('click',(e)=>this.askQuestion(e))
+        } else if(suspectResponse.status === 400){
+            //suspect responds with revealing information
+            if(questionRow < 3){
+                const revealedLoc =this.suspect.locationHistory[questionRow];
+                this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect)
+            }
         }
     }
     viewNotes = () => {
