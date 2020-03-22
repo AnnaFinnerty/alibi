@@ -33,20 +33,20 @@ class Suspect{
             this.questionsInInterview[questionNum] += 1;
             const responds = Math.random() > .5 && this.openness > 30
             const text = responds ? "I'm happy to tell you" : "I don't know";
-            return {text:text,status:100}
+            const status = responds ? 400 : 200;
+            return {text:text,status:status,question: questionNum}
         } else if (questionNum === 3) {
             //answering to follow up for more questions
             //interview over. reset for next interview
             this.interviews++;
             this.questionsInInterview = [0,0,0];
-            return {text:"I won't answer any more questions",status:null}
+            return {text:"I won't answer any more questions",status:null,question: questionNum}
         } else {
-            console.log('testing something')
             this.questionsInInterview[questionNum] += 1;
             const responds = Math.random() > .5 && this.openness > 30
             const text = responds ? "I'm happy to tell you" : "I don't know";
             const status = responds ? 400 : 200;
-            return {text:text,status:status}
+            return {text:text,status:status,question: questionNum}
         }
     }
     addNote(note){

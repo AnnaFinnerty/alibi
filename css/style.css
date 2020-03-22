@@ -187,6 +187,11 @@ header{
     background-color: dimgray;
 }
 
+.unsearched:hover{
+    background: goldenrod;
+    color: black;
+}
+
 .clue{
     width: 2vw;
     height: 2vw;
