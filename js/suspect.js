@@ -41,6 +41,7 @@ class Suspect{
             this.questionsInInterview = [0,0,0];
             return {text:"I won't answer any more questions",status:null}
         } else {
+            console.log('testing something')
             this.questionsInInterview[questionNum] += 1;
             const responds = Math.random() > .5 && this.openness > 30
             const text = responds ? "I'm happy to tell you" : "I don't know";
