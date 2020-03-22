@@ -123,6 +123,10 @@ header{
     color: white;
 }
 
+.time-button{
+    width: 25%;
+}
+
 #game-container{
     width: 100vw;
     height: 100vh;

@@ -69,7 +69,7 @@ class Game{
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
         // this.openMessage('Welcome to the mystery')
-        // this.test();
+        this.test();
     }
     test = () => {
         const clues = []
