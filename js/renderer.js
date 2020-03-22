@@ -8,7 +8,8 @@ class Renderer{
     }
     setup = (mystery,location,suspects) => {
         //game setup
-        this.buildHeader(mystery);
+        this.mystery = mystery;
+        this.buildHeader();
         this.render(location,suspects);
     }
     render = (location,suspects) => {
@@ -18,9 +19,9 @@ class Renderer{
         this.buildLocation(location)
         this.buildSuspects(suspects)
     }
-    buildHeader = (mystery) => {
-        document.querySelector('#victim-name').textContent = "Victim: " + mystery.victim.name
-        document.querySelector('#victim-site').textContent = mystery.site
+    buildHeader = () => {
+        document.querySelector('#victim-name').textContent = "Victim: " + this.mystery.victim.name
+        document.querySelector('#victim-site').textContent = this.mystery.site
     }
     buildLocation = (location) => {
         for(let x = 0; x < location.length; x++){

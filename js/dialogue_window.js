@@ -58,7 +58,7 @@ class DialogueWindow{
         const header = buildObject('div',this.questionPanel)
         header.textContent = "Interview: " + (this.suspect.interviews+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
-        const startRow = this.suspect.interviews % questions.length;
+        const startRow = (this.suspect.interviews+2) % questions.length;
         //only show three questions per interview
         for(let i = 0; i < 3; i++){
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
@@ -87,7 +87,7 @@ class DialogueWindow{
             ///Close the window and update suspect.
             console.log('the window should close')
             this.closeCallback();
-        } else if(suspectResponse.status === 100){
+        } else if(suspectResponse.question === 2){
             //suspect has answered all questions. follow-up?
             const q1 = buildObject('div',this.questionPanel,'question-unasked')
             q1.textContent = "Thanks for your time"
@@ -95,7 +95,8 @@ class DialogueWindow{
             const q2 = buildObject('div',this.questionPanel,'question-unasked')
             q2.textContent = "Will you answer more questions?"
             q2.addEventListener('click',(e)=>this.askQuestion(e))
-        } else if(suspectResponse.status === 400){
+        }
+        if(suspectResponse.status === 400){
             //suspect responds with revealing information
             if(questionRow < 3){
                 const revealedLoc =this.suspect.locationHistory[questionRow];

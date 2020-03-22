@@ -98,11 +98,14 @@ header{
 .suspect{
     border: .5px solid gray;
     border-radius: 100vw;
-    margin: .5vw;
+    margin: 1%;
     padding: .2vw;
-    width: 100%;
+    padding-left: .5vw;
+    width: 96%;
     display: flex;
     justify-content: space-between;
+    vertical-align: middle;
+    background: white;
 }
 
 .suspect:hover{
@@ -137,7 +140,9 @@ header{
 }
 
 #suspect-container{
+    width: 30vw;
     border: .25px solid dimgray;
+    padding: .1vw;
 }
 
 #narration-container{
@@ -185,6 +190,11 @@ header{
 .unsearched{
     color: white;
     background-color: dimgray;
+}
+
+.unsearched:hover{
+    background: goldenrod;
+    color: black;
 }
 
 .clue{
