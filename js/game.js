@@ -64,8 +64,8 @@ class Game{
         this.narration = "You and the inspector have been sent on another case"
 
         //test code
-        const test_sub = Object.keys(this.suspects)[4]
-        this.openDialogue(test_sub)
+        // const test_sub = Object.keys(this.suspects)[4]
+        // this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
         // this.openMessage('Welcome to the mystery')

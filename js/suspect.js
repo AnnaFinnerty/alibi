@@ -1,5 +1,6 @@
 class Suspect{
     constructor(name,color,locationHistory,isHost,hasSecret,clue,local,home,profession,partner){
+        console.log(locationHistory)
         this.name = name;
         this.color = color;
         this.locationHistory = locationHistory;
