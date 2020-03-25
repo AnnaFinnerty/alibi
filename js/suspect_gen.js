@@ -11,6 +11,7 @@ function generateSuspects(location,mystery){
     }
     // let victim = null;
     let last_suspect = null;
+    const randomDiscover = Math.floor(Math.random()*8)
     for(let i = 0; i < 8; i++){
         //add one to the index of the secret so we can pass it as a true/false value to makeCharacter
         const hasSecret = secrets.indexOf(i) + 1
@@ -34,18 +35,19 @@ function generateSuspects(location,mystery){
         //give some characters a random familial relationship with the suspect befores
         const rel_r = Math.random();
         const relative = rel_r < .3 ? last_suspect : null;
+        const discoversBody = i === randomDiscover; 
 
-        const suspect = makeCharacter(location,mystery.victim.locationHistory,isHost,hasSecret,relative,gender,relative,local,mystery.site);
+        const suspect = makeCharacter(location,mystery.victim.locationHistory,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
         suspects[suspect.name] = suspect
         last_suspect = suspect
     }
     return suspects
 }
 
-function makeCharacter(location,victimsPath,isHost,hasSecret,partner,gender,relative,local,site){
+function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partner,gender,relative,local,site){
     //generate the characters path from the victims path
     // console.log('victims paths', victimsPath)
-    const locHistory = this.genPath2(location,3);
+    const locHistory = this.genPath2(location,3,discoversBody);
     // const testPath = this.genPath2(location);
     // console.log('test path', testPath)
     // console.log('locHistory', locHistory)
@@ -114,7 +116,7 @@ function genPath(location,crossoverPaths){
     return [s1, start, s2]
 }
 
-function genPath2(location,segments=3){
+function genPath2(location,segments=3,discoversBody){
     // console.log('generating path',crossoverPaths)
     const start = randomStartPosition(location);
     console.log('start',start)
@@ -125,12 +127,16 @@ function genPath2(location,segments=3){
     let x = start.x;
     let y = start.y;
     while(counter < segments){
-        const pos = nextPos(location,x,y,testPath);
-        console.log(pos)
-        path.push(pos)
-        testPath.push(pos.x+"_"+pos.y)
-        x = pos.x;
-        y = pos.y;
+        if(discoversBody && counter+1 === segments){
+            path.push(victimsPostion)
+        } else {
+            const pos = nextPos(location,x,y,testPath);
+            console.log(pos)
+            path.push(pos)
+            testPath.push(pos.x+"_"+pos.y)
+            x = pos.x;
+            y = pos.y;
+        }
         counter++;
     }
     return path
@@ -161,8 +167,8 @@ function nextPos(location,currentX,currentY,testPath){
             possiblePaths.push({x:currentX,y:currentY+1})
         } 
     }
-    possiblePaths = possiblePaths.filter((path)=> !testPath.includes(path.x+"_"+path.y))
-    return randomFromArray(possiblePaths)
+    const limitedPaths = possiblePaths.filter((path)=> !testPath.includes(path.x+"_"+path.y))
+    return limitedPaths.length ? randomFromArray(limitedPaths) : randomFromArray(possiblePaths)
 }
 
 // let location = null;
