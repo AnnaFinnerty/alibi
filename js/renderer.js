@@ -53,8 +53,8 @@ class Renderer{
                         const time = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y);
                         if(this.time === 0 || this.time === time){
                             // console.log(location[x][y].occupants[i].locationHistory)
-                            const footprint = buildObject("div",room,"footprint");
-                            footprint.style.backgroundColor = location[x][y].occupants[i].color
+                            const footprint = buildObject("div",room,"icon-footprint");
+                            footprint.style.color = location[x][y].occupants[i].color
                             //don't set the time signal for the victim
                             footprint.textContent = location[x][y].occupants[i].color === "black" ? "" : time;
                         }

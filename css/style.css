@@ -99,13 +99,14 @@ header{
     border: .5px solid gray;
     border-radius: 100vw;
     margin: 1%;
-    padding: .2vw;
+    padding: 1%;
     padding-left: .5vw;
     width: 96%;
     display: flex;
     justify-content: space-between;
     vertical-align: middle;
     background: white;
+    font-family: 'Berkshire Swash', cursive;
 }
 
 .suspect:hover{
@@ -140,7 +141,7 @@ header{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    margin: 30vh auto;
+    margin: 30vh auto auto auto;
 }
 
 #suspect-container{
