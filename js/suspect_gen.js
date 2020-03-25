@@ -136,6 +136,8 @@ function genPath2(location,segments=3){
     return path
 }
 
+const victimsPostion = {x:null,y:null}
+
 function nextPos(location,currentX,currentY,testPath){
     let possiblePaths = [];
     if(currentX > 0){
@@ -164,7 +166,7 @@ function nextPos(location,currentX,currentY,testPath){
 }
 
 // let location = null;
-const victimsPostion = {x:null,y:null}
+
 const startPositions = []
 
 function randomStartPosition(location){

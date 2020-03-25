@@ -5,6 +5,7 @@ class Renderer{
         this.locationContainer = document.querySelector("#location-container");
         this.suspectContainer = document.querySelector("#suspect-container");
         this.location = null;
+        this.suspects = null;
         this.locations = {};
     }
     setup = (mystery,location,suspects) => {
@@ -17,6 +18,8 @@ class Renderer{
         //rerender location and suspects
         emptyContainer(this.locationContainer);
         emptyContainer(this.suspectContainer);
+        this.location = location;
+        this.suspects = suspects;
         this.buildLocation(location)
         this.buildSuspects(suspects)
     }
@@ -84,6 +87,6 @@ class Renderer{
     updateTime = (e) => {
         console.log('new time',e.target.datat)
         this.time = e.target.datat;
-        this.render();
+        this.render(this.location,this.suspects);
     }
 }
