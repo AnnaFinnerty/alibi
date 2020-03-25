@@ -106,6 +106,7 @@ header{
     justify-content: space-between;
     vertical-align: middle;
     background: white;
+    font-family: 'Berkshire Swash', cursive;
 }
 
 .suspect:hover{
@@ -140,7 +141,7 @@ header{
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    margin: 30vh auto;
+    margin: 30vh auto auto auto;
 }
 
 #suspect-container{
