@@ -5,11 +5,13 @@ class Game{
         this.dialogueManager = null;
         //state variables
         // this.isPlayerPlaying = true;
+        this.moves = 0;
         this.currentSuspect = null;
         
         //store locations that will be reused multiple times
         this.narrationContainer = document.querySelector('#narration-container');
         this.dialogueContainer = document.querySelector('#dialogue-container');
+        this.moveCounter = document.querySelector('#move-counter');
         this.nav = document.querySelector("nav");
 
         this.message = document.querySelector('#message');
@@ -98,6 +100,7 @@ class Game{
             this.locationTracker[room.datax][room.datay]['clues'] = clues;
         }
         this.render();
+        this.makeMove();
     }
     searchSuspects = (x,y) => {
         const clues = []
@@ -116,10 +119,15 @@ class Game{
         this.locationTracker[x][y]['occupants'].push(suspect);
         this.render();
     }
+    makeMove = () => {
+        this.moves += 1;
+        this.moveCounter.textContent = "Moves: " + this.moves;
+    }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
-        const suspect = this.suspects[subject]
-        this.dialogueManager.build(suspect)
+        const suspect = this.suspects[subject];
+        this.dialogueManager.build(suspect);
+        this.makeMove();
     }
     closeDialogue = () => {
         this.dialogueContainer.className = "hidden";

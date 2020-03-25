@@ -207,6 +207,9 @@ header{
     height: 2vw;
     background-color: red;
     border-radius: 100%;
+    text-align: center;
+    color: white;
+    font-family: 'Berkshire Swash', cursive;
 }
 
 .footprint{

@@ -62,7 +62,8 @@ class Renderer{
                 }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
-                            const clue = buildObject("div",room,"clue");    
+                            const clue = buildObject("div",room,"clue");
+                            clue.textContent = "?"    
                         }
                 }
             }
