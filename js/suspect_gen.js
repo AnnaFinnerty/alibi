@@ -46,8 +46,8 @@ function makeCharacter(location,victimsPath,isHost,hasSecret,partner,gender,rela
     //generate the characters path from the victims path
     // console.log('victims paths', victimsPath)
     const locHistory = this.genPath2(location,3);
-    const testPath = this.genPath2(location);
-    console.log('test path', testPath)
+    // const testPath = this.genPath2(location);
+    // console.log('test path', testPath)
     // console.log('locHistory', locHistory)
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
@@ -119,13 +119,16 @@ function genPath2(location,segments=3){
     const start = randomStartPosition(location);
     console.log('start',start)
     const path = [start]
+    const testPath = [];
+    testPath.push(start.x+"_"+start.y)
     let counter = 0;
     let x = start.x;
     let y = start.y;
     while(counter < segments){
-        const pos = nextPos(location,x,y,path);
+        const pos = nextPos(location,x,y,testPath);
         console.log(pos)
         path.push(pos)
+        testPath.push(pos.x+"_"+pos.y)
         x = pos.x;
         y = pos.y;
         counter++;
@@ -133,8 +136,8 @@ function genPath2(location,segments=3){
     return path
 }
 
-function nextPos(location,currentX,currentY,locationHistory){
-    let possiblePaths = []
+function nextPos(location,currentX,currentY,testPath){
+    let possiblePaths = [];
     if(currentX > 0){
         if(location[currentX-1][currentY] !== "empty"){
             possiblePaths.push({x:currentX-1,y:currentY})
@@ -156,7 +159,7 @@ function nextPos(location,currentX,currentY,locationHistory){
             possiblePaths.push({x:currentX,y:currentY+1})
         } 
     }
-    // possiblePaths = possiblePaths.map((path)=> !locationHistory.includes(path))
+    possiblePaths = possiblePaths.filter((path)=> !testPath.includes(path.x+"_"+path.y))
     return randomFromArray(possiblePaths)
 }
 
