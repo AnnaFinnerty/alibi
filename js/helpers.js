@@ -28,3 +28,7 @@ function emptyContainer(container){
 function playText(container,text,wordDelay,longDelay){
     container.textContent = text; 
 }
+
+function timer(callback,time){
+    setTimeout(callback,time)
+}

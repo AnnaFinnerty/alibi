@@ -104,7 +104,7 @@ class Game{
             for(let i = 0; i < clues.length; i++){
                 text.push(clues[i].object)
             }
-            this.openMessage(text)
+            this.openMessage(text,1000)
         }
         this.render();
     }
@@ -141,12 +141,15 @@ class Game{
         this.suspects[updatedSuspect.name] = updatedSuspect;
         this.render();
     }
-    openMessage = (textArray) => {
+    openMessage = (textArray,time) => {
         emptyContainer(this.message);
         this.messageContainer.className = "";
         for(let i = 0; i < textArray.length; i++){
             const para = buildObject('span',this.message)
             para.textContent = textArray[i]
+        }
+        if(time){
+            timer(this.closeMessage,time)
         }
     }
     closeMessage = () => {
