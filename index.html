@@ -30,7 +30,7 @@
             <div id="suspect-container"></div>
             <div class="hidden" id="dialogue-container">
                 <div class="row">
-                    <button class="close-button">X</button>
+                    <button class="close-button" id="dialogue-close-button">X</button>
                 </div>
                 <div class="row">
                     <div class="sidebar">
@@ -59,7 +59,12 @@
             </div>  
         </div>
     </main>
-    <div class="hidden" id="message"></div>
+    <div class="hidden" id="message-container">
+        <div class="row">
+            <button class="close-button" id="message-close-button">X</button>
+        </div>
+        <div id="message"></div>
+    </div>
     <script src="js/helpers.js"></script>
     <script src="js/responses.js"></script>
     <script src="js/questions.js"></script>

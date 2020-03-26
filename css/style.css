@@ -159,14 +159,20 @@ header{
     padding: 2vw;
 }
 
-#message{
+#message-container{
     border: 3px double black;
     width: 40vw;
-    height: 60vh;
     background: bisque;
     position: fixed;
     z-index: 100;
     margin: 0 30vw;
+    padding: 5%;
+}
+
+#message{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
 
 .close-button{

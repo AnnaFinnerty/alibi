@@ -14,11 +14,12 @@ class Game{
         this.moveCounter = document.querySelector('#move-counter');
         this.nav = document.querySelector("nav");
 
+        this.messageContainer = document.querySelector('#message-container');
         this.message = document.querySelector('#message');
         
         //add event listeners
-        //this is a problem event listeners will need to be remove every time -- make buttons?
-        document.querySelector('.close-button').addEventListener('click',this.closeDialogue)
+        document.querySelector('#dialogue-close-button').addEventListener('click',this.closeDialogue)
+        document.querySelector('#message-close-button').addEventListener('click',this.closeMessage)
         document.querySelector('#interview-button').addEventListener('click',this.interview)
         this.awake();
     }
@@ -92,15 +93,20 @@ class Game{
     }
     searchRoom = (room) => {
         console.log('searching room: ' + room.id)
-        console.log(room.datax, room.datay)
+        // console.log(room.datax, room.datay)
+        this.makeMove();
         this.locationTracker[room.datax][room.datay]['searched'] = true;
         const clues = this.searchSuspects(room.datax,room.datay)
         if(clues.length){
             console.log('clues found', clues)
             this.locationTracker[room.datax][room.datay]['clues'] = clues;
+            const text = ['You found a clue!','The ' + this.locationTracker[room.datax][room.datay]['name'] + ' was hiding:' ]
+            for(let i = 0; i < clues.length; i++){
+                text.push(clues[i].object)
+            }
+            this.openMessage(text)
         }
         this.render();
-        this.makeMove();
     }
     searchSuspects = (x,y) => {
         const clues = []
@@ -137,14 +143,14 @@ class Game{
     }
     openMessage = (textArray) => {
         emptyContainer(this.message);
-        this.message.className = "";
+        this.messageContainer.className = "";
         for(let i = 0; i < textArray.length; i++){
             const para = buildObject('span',this.message)
             para.textContent = textArray[i]
         }
     }
     closeMessage = () => {
-        this.message.className = "hidden"
+        this.messageContainer.className = "hidden"
         emptyContainer(this.message);
     }
     render = () => {
