@@ -58,7 +58,7 @@ class DialogueWindow{
         const header = buildObject('div',this.questionPanel)
         header.textContent = "Interview: " + (this.suspect.interviews+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
-        const startRow = (this.suspect.interviews+2) % questions.length;
+        const startRow = this.suspect.interviews % questions.length;
         //only show three questions per interview
         for(let i = 0; i < 3; i++){
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]

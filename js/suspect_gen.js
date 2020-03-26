@@ -4,6 +4,7 @@ function generateSuspects(location,mystery){
     victimsPostion['y'] = mystery.victim.locationHistory[2]['y'];
     console.log(victimsPostion)
     const suspects = {}
+    let suspectsArr = [];
     const sec_pos = [0,1,2,3,4,5,6,7]
     const secrets = [];
     for(let a = 0; a < 4; a++){
@@ -35,12 +36,17 @@ function generateSuspects(location,mystery){
         //give some characters a random familial relationship with the suspect befores
         const rel_r = Math.random();
         const relative = rel_r < .3 ? last_suspect : null;
-        const discoversBody = i === randomDiscover; 
-
+        //move these outside once that is working
+        const discoversBody = i === randomDiscover;
         const suspect = makeCharacter(location,mystery.victim.locationHistory,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
         suspects[suspect.name] = suspect
+        suspectsArr.push(suspect)
         last_suspect = suspect
     }
+
+    //shuffle suspects and assign some people random roles
+    suspectsArr = shuffle(suspectsArr)
+
     return suspects
 }
 
