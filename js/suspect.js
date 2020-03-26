@@ -1,5 +1,5 @@
 class Suspect{
-    constructor(name,color,locationHistory,isHost,hasSecret,clue,local,home,profession,partner){
+    constructor(name,color,locationHistory,isHost,hasSecret,clue,local,home,profession,relation,partner){
         console.log(locationHistory)
         this.name = name;
         this.color = color;
@@ -16,9 +16,9 @@ class Suspect{
         this.hasSecret = hasSecret;
         this.clue = clue;
         this.partner = partner;
+        this.relation = relation;
         this.guilty = null;
         this.openness = hasSecret ? Math.floor(Math.random()*50)+20 : Math.floor(Math.random()*60)+40;
-        // this.guilt = Math.floor(Math.random()*80);
         this.interviews = 0;
         this.questionsInInterview = [0,0,0];
         this.answers = new Array(questions.length).fill(0);

@@ -3,7 +3,6 @@ function generateSuspects(location,mystery){
     victimsPostion['x'] = mystery.victim.locationHistory[2]['x'];
     victimsPostion['y'] = mystery.victim.locationHistory[2]['y'];
     console.log(victimsPostion)
-    const suspects = {}
     let suspectsArr = [];
     const sec_pos = [0,1,2,3,4,5,6,7]
     const secrets = [];
@@ -39,24 +38,28 @@ function generateSuspects(location,mystery){
         //move these outside once that is working
         const discoversBody = i === randomDiscover;
         const suspect = makeCharacter(location,mystery.victim.locationHistory,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
-        suspects[suspect.name] = suspect
         suspectsArr.push(suspect)
         last_suspect = suspect
     }
 
     //shuffle suspects and assign some people random roles
-    suspectsArr = shuffle(suspectsArr)
+    suspectsArr = shuffle(suspectsArr);
 
-    return suspects
+    const finalSuspects = {}
+    //make final dict to retun
+    for(let i = 0; i < suspectsArr.length; i++){
+        finalSuspects[suspectsArr[i].name] = suspectsArr[i]
+    }
+
+    return finalSuspects
 }
 
 function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partner,gender,relative,local,site){
     //generate the characters path from the victims path
     // console.log('victims paths', victimsPath)
+    console.log('making character!')
+    console.log(relative)
     const locHistory = this.genPath2(location,3,discoversBody);
-    // const testPath = this.genPath2(location);
-    // console.log('test path', testPath)
-    // console.log('locHistory', locHistory)
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
     if(gender === "female"){
@@ -66,9 +69,15 @@ function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partn
         firstName = randomFromArrayAndRemove(maleFirstName);
         profession = randomFromArrayAndRemove(professionsMale)
     }
-    const name = firstName + " " +  randomFromArrayAndRemove(suspectLastNames)
+    const lastName = relative ? relative.name.split(' ')[1] : randomFromArrayAndRemove(suspectLastNames);
+    const name = firstName + " " +  lastName
     const color = randomFromArrayAndRemove(colors)
     const home = local ? site : randomFromArrayAndRemove(locationsAway)
+    let relation = null;
+    if(relative){
+        const type = randomFromArrayAndRemove(femaleRelations);
+        relation = {name:relative.name, relation: type}
+    }
 
     let clue = null;
     if(hasSecret){
@@ -78,7 +87,7 @@ function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partn
                }
     }
     
-    const character = new Suspect(name,color,locHistory,isHost,hasSecret,clue,local,home,profession);   
+    const character = new Suspect(name,color,locHistory,isHost,hasSecret,clue,local,home,profession,relation,partner);   
     return character
 }
 

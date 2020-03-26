@@ -7,7 +7,7 @@ class DialogueWindow{
         this.panel = "interview";
 
         //store reused elements
-        this.suspectProps = ['name','profession','home']
+        this.suspectProps = ['name','profession','home','relation']
         this.displayElements = {}
         for(let i = 0; i < this.suspectProps.length; i++){
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
@@ -22,10 +22,16 @@ class DialogueWindow{
         document.querySelector('#accuse-button').addEventListener('click',()=>this.updatePanel('accuse'))
     }
     build = (suspect) => {
-        // console.log('building suspect: ' + suspect)
+        console.log('building suspect: ' + suspect)
+        console.log(suspect.relation)
         this.suspect = suspect;
         for(let i in this.displayElements){
-            this.displayElements[i].textContent = suspect[i]
+            if(suspect[i] && i != 'relation'){
+                this.displayElements[i].textContent = suspect[i];
+            }
+        }
+        if(suspect.relation){
+            this.displayElements['relation'].textContent = suspect.relation.name + ", " + suspect.relation.relation;
         }
         this.updatePanel();
     }
