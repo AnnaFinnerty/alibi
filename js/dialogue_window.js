@@ -1,8 +1,9 @@
 class DialogueWindow{
-    constructor(mystery,closeCallback,addOccupantCallback){
+    constructor(mystery,closeCallback,addOccupantCallback,accuseCallback){
         this.mystery = mystery;
         this.closeCallback = closeCallback;
         this.addOccupantCallback = addOccupantCallback;
+        this.accuseCallback = accuseCallback;
         this.suspect = null;
         this.panel = "interview";
 
@@ -121,9 +122,7 @@ class DialogueWindow{
     }
     accuse = () => {
         console.log('j\'accuse')
-        this.emptyContainer(this.questionPanel);
-        const header = buildObject('div',this.questionPanel)
-        header.textContent = "I accuse yoU!"
+        this.accuseCallback();
     }
     close = () => {
         return this.suspect

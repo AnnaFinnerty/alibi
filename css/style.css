@@ -114,6 +114,10 @@ header{
     color: white;
 }
 
+.inactive{
+    background-color: gray;
+}
+
 .bullet{
     width: 3vw;
     height: 3vw;

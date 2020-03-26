@@ -72,8 +72,9 @@ class Renderer{
     }
     buildSuspects = (suspects) => {
         for(let x in suspects){
+            const active = suspects[x]['openness'] === 0 ? false : true;
             const suspect = document.createElement("div");
-            suspect.className = "suspect";
+            suspect.className = active ? "suspect" : "suspect inactive";
             suspect.id = suspects[x].name
             suspect.textContent = suspects[x].name;
             const bullet = document.createElement("div");
@@ -82,7 +83,9 @@ class Renderer{
             bullet.style.backgroundColor = suspects[x].color;
             suspect.appendChild(bullet);
             this.suspectContainer.appendChild(suspect);
-            suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
+            if(active){
+                suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
+            }
         }
     }
     updateTime = (e) => {

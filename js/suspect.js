@@ -50,6 +50,14 @@ class Suspect{
             return {text:text,status:status,question: questionNum}
         }
     }
+    accuse(){
+        if(this.hasSecret){
+            return "Oh no you discovered my secret"
+        } else {
+            this.openness = 0;
+            return "How dare you! I can't believe you accused me!"
+        }
+    }
     addNote(note){
         this.notes.push(note)
     }
