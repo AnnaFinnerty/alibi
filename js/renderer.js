@@ -47,7 +47,7 @@ class Renderer{
                 room.datax = x;
                 room.datay = y;
                 row.appendChild(room);
-                room.addEventListener('click',(e)=>this.game.searchRoom(e.target))
+                room.addEventListener('click',(e)=>this.game.searchRoom(e.currentTarget))
                 if(location[x][y].occupants.length){
                     for(let i = 0; i < location[x][y].occupants.length; i++){
                         const time = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y);
