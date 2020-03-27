@@ -72,9 +72,10 @@ class Game{
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
         // this.openMessage('Welcome to the mystery')
-        // this.test();
+        this.test();
     }
     test = () => {
+        console.log(this.locationTracker);
         const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
@@ -84,6 +85,7 @@ class Game{
             }
             if(suspect.clue){
                 const clue = suspect.clue;
+                console.log(clue);
                 clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
@@ -105,6 +107,8 @@ class Game{
                 text.push(clues[i].object)
             }
             this.openMessage(text,1000)
+        } else {
+            this.openMessage(['Nothing found in the ' + this.locationTracker[room.datax][room.datay]['name']],1000)
         }
         this.render();
     }

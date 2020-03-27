@@ -60,7 +60,7 @@ function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partn
     console.log('making character!')
     console.log(relative)
     const trueLocs = this.genPath2(location,3,discoversBody);
-    const locHistory = [trueLocs]
+    const locHistory = [trueLocs,trueLocs]
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
     if(gender === "female"){
@@ -84,7 +84,7 @@ function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partn
     if(hasSecret){
         clue = {
                     object: randomFromArrayAndRemove(clues),
-                    loc: randomFromArray(locHistory)
+                    loc: randomFromArray(locHistory[1])
                }
     }
     
