@@ -129,7 +129,7 @@ class Game{
         this.dialogueContainer.className = "hidden";
         const suspect = this.dialogueManager.close();
         const result = suspect.accuse();
-        this.suspects[updatedSuspect.name] = suspect;
+        this.suspects[suspect.name] = suspect;
         this.openMessage(['You accused ' + suspect.name,result])
         this.render();
     }

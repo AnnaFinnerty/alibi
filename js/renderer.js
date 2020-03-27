@@ -78,7 +78,7 @@ class Renderer{
             suspect.id = suspects[x].name
             suspect.textContent = suspects[x].name;
             const bullet = document.createElement("div");
-            bullet.textContent = suspects[x].interviews === 0 ? "?" : suspects[x].interviews;
+            bullet.textContent = suspects[x].interviews === 0 ? "?" : suspects[x].openness === 0 ? "X" : suspects[x].interviews;
             bullet.className = "bullet"
             bullet.style.backgroundColor = suspects[x].color;
             suspect.appendChild(bullet);
