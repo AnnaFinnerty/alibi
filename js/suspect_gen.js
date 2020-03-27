@@ -1,7 +1,7 @@
 function generateSuspects(location,mystery){
     console.log('generating suspects');
-    victimsPostion['x'] = mystery.victim.locationHistory[2]['x'];
-    victimsPostion['y'] = mystery.victim.locationHistory[2]['y'];
+    victimsPostion['x'] = mystery.victim.locationHistory[0][2]['x'];
+    victimsPostion['y'] = mystery.victim.locationHistory[0][2]['y'];
     console.log(victimsPostion)
     let suspectsArr = [];
     const sec_pos = [0,1,2,3,4,5,6,7]
@@ -59,7 +59,8 @@ function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partn
     // console.log('victims paths', victimsPath)
     console.log('making character!')
     console.log(relative)
-    const locHistory = this.genPath2(location,3,discoversBody);
+    const trueLocs = this.genPath2(location,3,discoversBody);
+    const locHistory = [trueLocs]
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
     if(gender === "female"){

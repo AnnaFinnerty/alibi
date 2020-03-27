@@ -62,7 +62,7 @@ class Game{
         this.locationTracker = locationTracker;
         //add victim to the room
         //WARNING YOU HARDCODED THIS DUMMY    
-        this.locationTracker[victim.locationHistory[2].x][victim.locationHistory[2].y]['occupants'].push(victim)
+        this.locationTracker[victim.locationHistory[0][2].x][victim.locationHistory[0][2].y]['occupants'].push(victim)
         console.log(this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
@@ -78,8 +78,8 @@ class Game{
         const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
-            for(let i = 0; i < suspect.locationHistory.length; i++){
-                const loc = suspect.locationHistory[i];
+            for(let i = 0; i < suspect.locationHistory[0].length; i++){
+                const loc = suspect.locationHistory[0][i];
                 this.locationTracker[loc.x][loc.y]['occupants'].push(suspect);
             }
             if(suspect.clue){

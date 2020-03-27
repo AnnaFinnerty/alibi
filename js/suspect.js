@@ -5,8 +5,8 @@ class Suspect{
         this.color = color;
         this.locationHistory = locationHistory;
         this.locationTimes = [];
-        for(let i = 0; i < locationHistory.length; i++){
-            this.locationTimes.push(locationHistory[i].x + "_" +locationHistory[i].y)
+        for(let i = 0; i < locationHistory[0].length; i++){
+            this.locationTimes.push(locationHistory[0][i].x + "_" +locationHistory[0][i].y)
         }
         this.local = local;
         this.home = home;
