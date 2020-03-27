@@ -37,7 +37,7 @@ class Game{
         
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
-        this.case = new Case(victim,startHour);
+        this.case = buildCase(victim,startHour)
         console.log('case',this.case)
 
         this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
