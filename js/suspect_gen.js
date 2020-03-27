@@ -37,7 +37,7 @@ function generateSuspects(location,mystery){
         const relative = rel_r < .3 ? last_suspect : null;
         //move these outside once that is working
         const discoversBody = i === randomDiscover;
-        const suspect = makeCharacter(location,mystery.victim.locationHistory,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
+        const suspect = makeCharacter(location,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
         suspectsArr.push(suspect)
         last_suspect = suspect
     }
@@ -54,7 +54,7 @@ function generateSuspects(location,mystery){
     return finalSuspects
 }
 
-function makeCharacter(location,victimsPath,isHost,discoversBody,hasSecret,partner,gender,relative,local,site){
+function makeCharacter(location,isHost,discoversBody,hasSecret,partner,gender,relative,local,site){
     //generate the characters path from the victims path
     // console.log('victims paths', victimsPath)
     console.log('making character!')
@@ -215,7 +215,7 @@ const professionsFemale = ["wife","housewife","mother","heiress", "doctor","prof
 const locationsAway = ["China","India","Egypt","Kenya","Greece","Italy","France"]
 
 const suspectLastNames = [
-    "Constantine", "Arbuthnot", "de Bellefort", 'Ackroyd', "Inglethorp", "Redfern", "Gardener",
+    "Constantine", "Arbuthnot", 'Carlisle', 'Ackroyd', "Inglethorp", "Redfern", "Gardener",
      "Brewster", "Blatt", "Argyle", "MacMaster"
 ]
 

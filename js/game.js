@@ -61,17 +61,17 @@ class Game{
         }
         this.locationTracker = locationTracker;
         //add victim to the room
-        //WARNING YOU HARDCODED THIS DUMMY    
+  
         this.locationTracker[victim.locationHistory[0][2].x][victim.locationHistory[0][2].y]['occupants'].push(victim)
         console.log(this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
-        //test code
+        //run test code
         // const test_sub = Object.keys(this.suspects)[4]
         // this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
-        // this.openMessage('Welcome to the mystery')
+        this.openMessage([this.case.intro], 2000)
         this.test();
     }
     test = () => {

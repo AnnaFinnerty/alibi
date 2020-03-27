@@ -26,6 +26,10 @@ class Renderer{
     buildHeader = () => {
         document.querySelector('#victim-name').textContent = "Victim: " + this.mystery.victim.name
         document.querySelector('#victim-site').textContent = this.mystery.site
+        document.querySelector('#victim-crime').textContent = "Crime: " + this.mystery.crime
+        document.querySelector('#victim-method').textContent = this.mystery.methodKnown ? "Method: " + this.mystery.method : "Method: ?";
+        document.querySelector('#victim-motive').textContent = this.mystery.motiveKnown ? "Motive: " + this.mystery.motive : "Motive: ?";
+        document.querySelector('#victim-tod').textContent = this.mystery.tod ? "Time of Death: " + this.mystery.tod : "Time of Death: ?";
     }
     buildLocation = (location) => {
         const buttonRow = buildObject('div',this.locationContainer,'row')
@@ -53,7 +57,7 @@ class Renderer{
                         const time = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y);
                         if(this.time === 0 || this.time === time){
                             // console.log(location[x][y].occupants[i].locationHistory)
-                            const footprint = buildObject("div",room,"icon-footprint");
+                            const footprint = buildObject("span",room,"icon-footprint");
                             footprint.style.color = location[x][y].occupants[i].color
                             //don't set the time signal for the victim
                             footprint.textContent = location[x][y].occupants[i].color === "black" ? "" : time;
@@ -62,7 +66,7 @@ class Renderer{
                 }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
-                            const clue = buildObject("div",room,"clue");
+                            const clue = buildObject("span",room,"clue");
                             clue.textContent = "?"    
                         }
                 }

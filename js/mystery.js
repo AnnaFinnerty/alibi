@@ -3,10 +3,14 @@ class Case{
         this.victim = victim;
         this.startHour = startHour;
         this.site = site;
-        this.type = type;
+        this.crime = type;
         this.motive = motive;
+        this.motiveKnown = false;
         this.method = method;
+        this.methodKnown = true;
+        this.tod = null;
         this.intro = intro;
+        this.solved = false;
     }
 }
 
@@ -15,12 +19,13 @@ function buildCase(victim,startHour){
     const locationNameTwo = ['ford','mann','wyn','shire','lop'];
     const locationNameThree = ['House','Manor','Park','Castle'];
     const site = randomFromArray(locationNameOne) + randomFromArray(locationNameTwo) + " " + randomFromArray(locationNameThree);
-    const type = randomFromArray(['Murder']);
+    const type = randomFromArray(['murder']);
     const motive = randomFromArray(['revenge','divorce','inherit','love','madness'])
-    const methods = Object.keys[mysteryDict];
-    const method = randomFromArray[methods];
-    const intro = "This is the intro dog"
-    const mystery = new Case(victim,startHour,site,type,motive,method,intro)
+    const crime = randomFromArray(mysteryDict[type]);
+    
+    const mystery = new Case(victim,startHour,site,type,motive,crime.method)
+    const intro = buildIntro(mystery)
+    mystery.intro = intro;
     return mystery
 }
 
@@ -36,6 +41,15 @@ const mysteryDict = {
 
 const motiveDict = {
 
+}
+
+function buildIntro(mystery){
+    const victim = mystery.victim.name;
+    const site = mystery.site;
+    const intros = [
+        "You have been summoned to " + site + ". " + victim + " has been found murdered! Can you figure out who did it?"
+    ]
+    return randomFromArray(intros)
 }
 
 
