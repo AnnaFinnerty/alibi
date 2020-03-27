@@ -20,7 +20,7 @@ class DialogueWindow{
         //event listeners
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
         document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
-        document.querySelector('#accuse-button').addEventListener('click',()=>this.updatePanel('accuse'))
+        document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)
     }
     build = (suspect) => {
         console.log('building suspect: ' + suspect)
@@ -119,10 +119,6 @@ class DialogueWindow{
             const note = buildObject('div',this.questionPanel)
             note.textContent = this.suspect.notes[i]
         }
-    }
-    accuse = () => {
-        console.log('j\'accuse')
-        this.accuseCallback();
     }
     close = () => {
         return this.suspect

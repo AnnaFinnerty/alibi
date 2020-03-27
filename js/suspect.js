@@ -50,7 +50,8 @@ class Suspect{
             return {text:text,status:status,question: questionNum}
         }
     }
-    accuse(){
+    accuse(victimLocation){
+        this.interviews += 1;
         if(this.hasSecret){
             return "Oh no you discovered my secret"
         } else {
