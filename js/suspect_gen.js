@@ -132,9 +132,9 @@ function genPath(location,crossoverPaths){
     return [s1, start, s2]
 }
 
-function genPath2(location,segments=3,discoversBody){
+function genPath2(location,segments=3,discoversBody,endPosition){
     // console.log('generating path',crossoverPaths)
-    const start = randomStartPosition(location);
+    const start = endPosition ? endPosition : randomStartPosition(location);
     console.log('start',start)
     const path = [start]
     const testPath = [];
