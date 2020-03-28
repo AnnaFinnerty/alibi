@@ -30,11 +30,15 @@ function generateSuspects(location,mystery){
         //give some characters a random familial relationship with the suspect befores
         const rel_r = Math.random();
         const relative = rel_r < .3 ? last_suspect : null;
+        
         //set the final position. 
         const endPosition = i === randomDiscover ? victimsPostion : null;
         const suspect = makeCharacter(location,isHost,endPosition,hasSecret,relative,gender,relative,local,mystery.site);
         suspectsArr.push(suspect)
         last_suspect = suspect
+        if(relative){
+            suspectsArr[i-1]['relative'] = suspect
+        }
     }
 
     //shuffle suspects and assign some people random roles
@@ -56,19 +60,14 @@ function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,rela
     console.log(relative)
     const trueLocs = this.genPath(location,3,endPosition);
     const locHistory = [trueLocs,trueLocs]
+    //assign gender to victims (one is provided for suspects)
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
-    let firstName, profession;
-    if(gender === "female"){
-        firstName = randomFromArrayAndRemove(femaleFirstName);
-        profession = randomFromArrayAndRemove(professionsFemale)
-    } else {
-        firstName = randomFromArrayAndRemove(maleFirstName);
-        profession = randomFromArrayAndRemove(professionsMale)
-    }
+    const firstName = gender === "female" ? randomFromArrayAndRemove(femaleFirstName) : randomFromArrayAndRemove(maleFirstName);
     const lastName = relative ? relative.name.split(' ')[1] : randomFromArrayAndRemove(suspectLastNames);
     const name = firstName + " " +  lastName
+    const profession = gender === "female" ? randomFromArrayAndRemove(professionsFemale) : randomFromArrayAndRemove(professionsMale);
     const color = randomFromArrayAndRemove(colors)
-    const home = local ? site : randomFromArrayAndRemove(locationsAway)
+    const home = isHost ? site : local ? site.split(" ")[0] : randomFromArrayAndRemove(locationsAway)
     let relation = null;
     if(relative){
         const type = randomFromArrayAndRemove(femaleRelations);
