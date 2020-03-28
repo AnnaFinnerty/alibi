@@ -1,12 +1,12 @@
 class Suspect{
-    constructor(name,color,locationHistory,isHost,hasSecret,clue,local,home,profession,partner){
+    constructor(name,color,locationHistory,isHost,hasSecret,clue,local,home,profession,relation,partner){
         console.log(locationHistory)
         this.name = name;
         this.color = color;
         this.locationHistory = locationHistory;
         this.locationTimes = [];
-        for(let i = 0; i < locationHistory.length; i++){
-            this.locationTimes.push(locationHistory[i].x + "_" +locationHistory[i].y)
+        for(let i = 0; i < locationHistory[0].length; i++){
+            this.locationTimes.push(locationHistory[0][i].x + "_" +locationHistory[0][i].y)
         }
         this.local = local;
         this.home = home;
@@ -16,9 +16,9 @@ class Suspect{
         this.hasSecret = hasSecret;
         this.clue = clue;
         this.partner = partner;
+        this.relation = relation;
         this.guilty = null;
         this.openness = hasSecret ? Math.floor(Math.random()*50)+20 : Math.floor(Math.random()*60)+40;
-        // this.guilt = Math.floor(Math.random()*80);
         this.interviews = 0;
         this.questionsInInterview = [0,0,0];
         this.answers = new Array(questions.length).fill(0);
@@ -48,6 +48,15 @@ class Suspect{
             const text = responds ? "I'm happy to tell you" : "I don't know";
             const status = responds ? 400 : 200;
             return {text:text,status:status,question: questionNum}
+        }
+    }
+    accuse(victimLocation){
+        this.interviews += 1;
+        if(this.hasSecret){
+            return "Oh no you discovered my secret"
+        } else {
+            this.openness = 0;
+            return "How dare you! I can't believe you accused me!"
         }
     }
     addNote(note){

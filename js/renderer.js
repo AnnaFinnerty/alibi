@@ -26,6 +26,10 @@ class Renderer{
     buildHeader = () => {
         document.querySelector('#victim-name').textContent = "Victim: " + this.mystery.victim.name
         document.querySelector('#victim-site').textContent = this.mystery.site
+        document.querySelector('#victim-crime').textContent = "Crime: " + this.mystery.crime
+        document.querySelector('#victim-method').textContent = this.mystery.methodKnown ? "Method: " + this.mystery.method : "Method: ?";
+        document.querySelector('#victim-motive').textContent = this.mystery.motiveKnown ? "Motive: " + this.mystery.motive : "Motive: ?";
+        document.querySelector('#victim-tod').textContent = this.mystery.tod ? "Time of Death: " + this.mystery.tod : "Time of Death: ?";
     }
     buildLocation = (location) => {
         const buttonRow = buildObject('div',this.locationContainer,'row')
@@ -47,14 +51,14 @@ class Renderer{
                 room.datax = x;
                 room.datay = y;
                 row.appendChild(room);
-                room.addEventListener('click',(e)=>this.game.searchRoom(e.target))
+                room.addEventListener('click',(e)=>this.game.searchRoom(e.currentTarget))
                 if(location[x][y].occupants.length){
                     for(let i = 0; i < location[x][y].occupants.length; i++){
                         const time = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y);
                         if(this.time === 0 || this.time === time){
                             // console.log(location[x][y].occupants[i].locationHistory)
-                            const footprint = buildObject("div",room,"footprint");
-                            footprint.style.backgroundColor = location[x][y].occupants[i].color
+                            const footprint = buildObject("span",room,"icon-footprint");
+                            footprint.style.color = location[x][y].occupants[i].color
                             //don't set the time signal for the victim
                             footprint.textContent = location[x][y].occupants[i].color === "black" ? "" : time;
                         }
@@ -62,7 +66,8 @@ class Renderer{
                 }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
-                            const clue = buildObject("div",room,"clue");    
+                            const clue = buildObject("span",room,"clue");
+                            clue.textContent = "?"    
                         }
                 }
             }
@@ -71,17 +76,20 @@ class Renderer{
     }
     buildSuspects = (suspects) => {
         for(let x in suspects){
+            const active = suspects[x]['openness'] === 0 ? false : true;
             const suspect = document.createElement("div");
-            suspect.className = "suspect";
+            suspect.className = active ? "suspect" : "suspect inactive";
             suspect.id = suspects[x].name
             suspect.textContent = suspects[x].name;
             const bullet = document.createElement("div");
-            bullet.textContent = suspects[x].interviews === 0 ? "?" : suspects[x].interviews;
+            bullet.textContent = suspects[x].interviews === 0 ? "?" : suspects[x].openness === 0 ? "X" : suspects[x].interviews;
             bullet.className = "bullet"
             bullet.style.backgroundColor = suspects[x].color;
             suspect.appendChild(bullet);
             this.suspectContainer.appendChild(suspect);
-            suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
+            if(active){
+                suspect.addEventListener('click',(e)=>this.game.openDialogue(e.target.id))
+            }
         }
     }
     updateTime = (e) => {

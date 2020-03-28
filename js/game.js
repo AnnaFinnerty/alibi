@@ -5,18 +5,21 @@ class Game{
         this.dialogueManager = null;
         //state variables
         // this.isPlayerPlaying = true;
+        this.moves = 0;
         this.currentSuspect = null;
         
         //store locations that will be reused multiple times
         this.narrationContainer = document.querySelector('#narration-container');
         this.dialogueContainer = document.querySelector('#dialogue-container');
+        this.moveCounter = document.querySelector('#move-counter');
         this.nav = document.querySelector("nav");
 
+        this.messageContainer = document.querySelector('#message-container');
         this.message = document.querySelector('#message');
         
         //add event listeners
-        //this is a problem event listeners will need to be remove every time -- make buttons?
-        document.querySelector('.close-button').addEventListener('click',this.closeDialogue)
+        document.querySelector('#dialogue-close-button').addEventListener('click',this.closeDialogue)
+        document.querySelector('#message-close-button').addEventListener('click',this.closeMessage)
         document.querySelector('#interview-button').addEventListener('click',this.interview)
         this.awake();
     }
@@ -34,10 +37,10 @@ class Game{
         
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
-        this.case = new Case(victim,startHour);
+        this.case = buildCase(victim,startHour)
         console.log('case',this.case)
 
-        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant);
+        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
 
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
@@ -58,29 +61,31 @@ class Game{
         }
         this.locationTracker = locationTracker;
         //add victim to the room
-        //WARNING YOU HARDCODED THIS DUMMY    
-        this.locationTracker[victim.locationHistory[2].x][victim.locationHistory[2].y]['occupants'].push(victim)
+  
+        this.locationTracker[victim.locationHistory[0][2].x][victim.locationHistory[0][2].y]['occupants'].push(victim)
         console.log(this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
-        //test code
+        //run test code
         // const test_sub = Object.keys(this.suspects)[4]
         // this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
-        // this.openMessage('Welcome to the mystery')
+        this.openMessage([this.case.intro], 2000)
         this.test();
     }
     test = () => {
+        console.log(this.locationTracker);
         const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
-            for(let i = 0; i < suspect.locationHistory.length; i++){
-                const loc = suspect.locationHistory[i];
+            for(let i = 0; i < suspect.locationHistory[0].length; i++){
+                const loc = suspect.locationHistory[0][i];
                 this.locationTracker[loc.x][loc.y]['occupants'].push(suspect);
             }
             if(suspect.clue){
                 const clue = suspect.clue;
+                console.log(clue);
                 clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
@@ -90,12 +95,20 @@ class Game{
     }
     searchRoom = (room) => {
         console.log('searching room: ' + room.id)
-        console.log(room.datax, room.datay)
+        // console.log(room.datax, room.datay)
+        this.makeMove();
         this.locationTracker[room.datax][room.datay]['searched'] = true;
         const clues = this.searchSuspects(room.datax,room.datay)
         if(clues.length){
             console.log('clues found', clues)
             this.locationTracker[room.datax][room.datay]['clues'] = clues;
+            const text = ['You found a clue!','The ' + this.locationTracker[room.datax][room.datay]['name'] + ' was hiding:' ]
+            for(let i = 0; i < clues.length; i++){
+                text.push(clues[i].object)
+            }
+            this.openMessage(text,1000)
+        } else {
+            this.openMessage(['Nothing found in the ' + this.locationTracker[room.datax][room.datay]['name']],1000)
         }
         this.render();
     }
@@ -116,10 +129,23 @@ class Game{
         this.locationTracker[x][y]['occupants'].push(suspect);
         this.render();
     }
+    accuseSuspect = () => {
+        this.dialogueContainer.className = "hidden";
+        const suspect = this.dialogueManager.close();
+        const result = suspect.accuse();
+        this.suspects[suspect.name] = suspect;
+        this.openMessage(['You accused ' + suspect.name,result])
+        this.render();
+    }
+    makeMove = () => {
+        this.moves += 1;
+        this.moveCounter.textContent = "Moves: " + this.moves;
+    }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
-        const suspect = this.suspects[subject]
-        this.dialogueManager.build(suspect)
+        const suspect = this.suspects[subject];
+        this.dialogueManager.build(suspect);
+        this.makeMove();
     }
     closeDialogue = () => {
         this.dialogueContainer.className = "hidden";
@@ -127,16 +153,19 @@ class Game{
         this.suspects[updatedSuspect.name] = updatedSuspect;
         this.render();
     }
-    openMessage = (textArray) => {
+    openMessage = (textArray,time) => {
         emptyContainer(this.message);
-        this.message.className = "";
+        this.messageContainer.className = "";
         for(let i = 0; i < textArray.length; i++){
             const para = buildObject('span',this.message)
             para.textContent = textArray[i]
         }
+        if(time){
+            timer(this.closeMessage,time)
+        }
     }
     closeMessage = () => {
-        this.message.className = "hidden"
+        this.messageContainer.className = "hidden"
         emptyContainer(this.message);
     }
     render = () => {

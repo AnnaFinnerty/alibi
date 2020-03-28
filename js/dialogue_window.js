@@ -1,13 +1,14 @@
 class DialogueWindow{
-    constructor(mystery,closeCallback,addOccupantCallback){
+    constructor(mystery,closeCallback,addOccupantCallback,accuseCallback){
         this.mystery = mystery;
         this.closeCallback = closeCallback;
         this.addOccupantCallback = addOccupantCallback;
+        this.accuseCallback = accuseCallback;
         this.suspect = null;
         this.panel = "interview";
 
         //store reused elements
-        this.suspectProps = ['name','profession','home']
+        this.suspectProps = ['name','profession','home','relation']
         this.displayElements = {}
         for(let i = 0; i < this.suspectProps.length; i++){
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
@@ -19,13 +20,19 @@ class DialogueWindow{
         //event listeners
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
         document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
-        document.querySelector('#accuse-button').addEventListener('click',()=>this.updatePanel('accuse'))
+        document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)
     }
     build = (suspect) => {
-        // console.log('building suspect: ' + suspect)
+        console.log('building suspect: ' + suspect)
+        console.log(suspect.relation)
         this.suspect = suspect;
         for(let i in this.displayElements){
-            this.displayElements[i].textContent = suspect[i]
+            if(suspect[i] && i != 'relation'){
+                this.displayElements[i].textContent = suspect[i];
+            }
+        }
+        if(suspect.relation){
+            this.displayElements['relation'].textContent = suspect.relation.name + ", " + suspect.relation.relation;
         }
         this.updatePanel();
     }
@@ -58,7 +65,7 @@ class DialogueWindow{
         const header = buildObject('div',this.questionPanel)
         header.textContent = "Interview: " + (this.suspect.interviews+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
-        const startRow = (this.suspect.interviews+2) % questions.length;
+        const startRow = this.suspect.interviews % questions.length;
         //only show three questions per interview
         for(let i = 0; i < 3; i++){
             const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
@@ -99,7 +106,7 @@ class DialogueWindow{
         if(suspectResponse.status === 400){
             //suspect responds with revealing information
             if(questionRow < 3){
-                const revealedLoc =this.suspect.locationHistory[questionRow];
+                const revealedLoc =this.suspect.locationHistory[0][questionRow];
                 this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect)
             }
         }
@@ -112,12 +119,6 @@ class DialogueWindow{
             const note = buildObject('div',this.questionPanel)
             note.textContent = this.suspect.notes[i]
         }
-    }
-    accuse = () => {
-        console.log('j\'accuse')
-        this.emptyContainer(this.questionPanel);
-        const header = buildObject('div',this.questionPanel)
-        header.textContent = "I accuse yoU!"
     }
     close = () => {
         return this.suspect
