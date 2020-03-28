@@ -2,8 +2,8 @@ function generateSuspects(location,mystery){
     console.log('generating suspects');
     victimsPostion['x'] = mystery.victim.locationHistory[0][2]['x'];
     victimsPostion['y'] = mystery.victim.locationHistory[0][2]['y'];
-    console.log(victimsPostion)
     let suspectsArr = [];
+    const gender_assignments = ["male","male","male","male","female","female","female","female"]
     const sec_pos = [0,1,2,3,4,5,6,7]
     const secrets = [];
     for(let a = 0; a < 4; a++){
@@ -18,12 +18,7 @@ function generateSuspects(location,mystery){
         //the first person with a secret is guilty
         //they will be the only person in the room with the victim/object at the time of the crime
         const isHost = i === 0;
-        let gender
-        if(i<4){
-            gender = "female"
-        } else {
-            gender = "male"
-        }
+        const gender = randomFromArrayAndRemove(gender_assignments)
         let local = true;
         //the host will always be local
         if(i > 0){
@@ -35,9 +30,9 @@ function generateSuspects(location,mystery){
         //give some characters a random familial relationship with the suspect befores
         const rel_r = Math.random();
         const relative = rel_r < .3 ? last_suspect : null;
-        //move these outside once that is working
-        const discoversBody = i === randomDiscover;
-        const suspect = makeCharacter(location,isHost,discoversBody,hasSecret,relative,gender,relative,local,mystery.site);
+        //set the final position. 
+        const endPosition = i === randomDiscover ? victimsPostion : null;
+        const suspect = makeCharacter(location,isHost,endPosition,hasSecret,relative,gender,relative,local,mystery.site);
         suspectsArr.push(suspect)
         last_suspect = suspect
     }
@@ -54,12 +49,12 @@ function generateSuspects(location,mystery){
     return finalSuspects
 }
 
-function makeCharacter(location,isHost,discoversBody,hasSecret,partner,gender,relative,local,site){
+function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,relative,local,site){
     //generate the characters path from the victims path
     // console.log('victims paths', victimsPath)
     console.log('making character!')
     console.log(relative)
-    const trueLocs = this.genPath2(location,3,discoversBody);
+    const trueLocs = this.genPath(location,3,endPosition);
     const locHistory = [trueLocs,trueLocs]
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
     let firstName, profession;
@@ -92,48 +87,9 @@ function makeCharacter(location,isHost,discoversBody,hasSecret,partner,gender,re
     return character
 }
 
-function genPath(location,crossoverPaths){
+function genPath(location,segments=3,endPosition){
     // console.log('generating path',crossoverPaths)
-    let start = randomStartPosition(location);
-    if(!crossoverPaths){
-        start = randomStartPosition(location);
-    } else {
-        start = crossoverPaths[Math.floor(Math.random()*crossoverPaths.length)]
-    }
-    // console.log('start',start)
-    const possiblePaths = []
-    if(start.x > 0){
-        if(location[start.x-1][start.y] !== "empty"){
-            possiblePaths.push({x:start.x-1,y:start.y})
-        } 
-    }
-    if(start.x < location.length-1){
-        if(location[start.x+1][start.y] !== "empty"){
-            possiblePaths.push({x:start.x+1,y:start.y})
-        } 
-        
-    }
-    if(start.y > 0){
-        if(location[start.x][start.y-1] !== "empty"){
-            possiblePaths.push({x:start.x,y:start.y-1})
-        } 
-    }
-    if(start.y < location[0].length-1){
-        if(location[start.x][start.y+1] !== "empty"){
-            possiblePaths.push({x:start.x,y:start.y+1})
-        } 
-    }
-    const r1 = Math.floor(Math.random()*possiblePaths.length);
-    const s1 = possiblePaths[r1];
-    possiblePaths.splice(r1,1)
-    const r2 = Math.floor(Math.random()*possiblePaths.length);
-    const s2 = possiblePaths[r2];
-    possiblePaths.splice(r2,1)
-    return [s1, start, s2]
-}
-
-function genPath2(location,segments=3,discoversBody,endPosition){
-    // console.log('generating path',crossoverPaths)
+    //work backwards, creating the path from the final position
     const start = endPosition ? endPosition : randomStartPosition(location);
     console.log('start',start)
     const path = [start]
@@ -143,19 +99,16 @@ function genPath2(location,segments=3,discoversBody,endPosition){
     let x = start.x;
     let y = start.y;
     while(counter < segments){
-        if(discoversBody && counter+1 === segments){
-            path.push(victimsPostion)
-        } else {
-            const pos = nextPos(location,x,y,testPath);
-            console.log(pos)
-            path.push(pos)
-            testPath.push(pos.x+"_"+pos.y)
-            x = pos.x;
-            y = pos.y;
-        }
+        const pos = nextPos(location,x,y,testPath);
+        console.log(pos)
+        path.push(pos)
+        testPath.push(pos.x+"_"+pos.y)
+        x = pos.x;
+        y = pos.y;
         counter++;
     }
-    return path
+    //return the path reversed
+    return path.reverse()
 }
 
 const victimsPostion = {x:null,y:null}
