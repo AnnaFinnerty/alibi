@@ -63,7 +63,7 @@ class Game{
         //add victim to the room
   
         this.locationTracker[victim.locationHistory[0][2].x][victim.locationHistory[0][2].y]['occupants'].push(victim)
-        console.log(this.locationTracker)
+        console.log('location tracker',this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
         //run test code
@@ -75,7 +75,7 @@ class Game{
         this.test();
     }
     test = () => {
-        console.log(this.locationTracker);
+        console.log('testing');
         this.testing = true;
         const clues = []
         for(let s in this.suspects){
@@ -86,12 +86,12 @@ class Game{
             }
             if(suspect.clue){
                 const clue = suspect.clue;
-                console.log(clue);
+                // console.log(clue);
                 clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
         }
-        console.log('clues',clues)
+        // console.log('clues',clues)
         this.render();
     }
     searchRoom = (room) => {

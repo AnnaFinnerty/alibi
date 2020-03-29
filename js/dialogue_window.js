@@ -40,7 +40,17 @@ class DialogueWindow{
             const hasSecret = buildObject('div',testArea)
             hasSecret.textContent = suspect.hasSecret ? "I have a secret" : "I don't have a secret";
             const secretType = buildObject('div',testArea)
-            secretType.textContent = suspect.hasSecret ? "" : "My secret is...";
+            let secretText = "";
+            if(suspect.hasSecret === 1){
+                secretText = "I am the murderer";
+            } else if (suspect.hasSecret === 2 || suspect.hasSecret === 3){
+                console.log(suspect.partner)
+                secretText = "My secret partner is " + suspect.partner.name;
+            } else if (suspect.hasSecret === 4) {
+                secretText = "I have a secret but I don't have a partner"
+            }
+            secretType.textContent = secretText;
+
         }
         this.updatePanel();
     }
