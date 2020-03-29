@@ -40,7 +40,7 @@ class Game{
         this.case = buildCase(this.location,victim,startHour)
         console.log('case',this.case)
 
-        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
+        this.dialogueManager = new DialogueWindow(this,this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
 
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
@@ -141,6 +141,12 @@ class Game{
     makeMove = () => {
         this.moves += 1;
         this.moveCounter.textContent = "Moves: " + this.moves;
+    }
+    nextSuspect = () => {
+        console.log('next suspect')
+    }
+    lastSuspect = () => {
+        console.log('next suspect')
     }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";

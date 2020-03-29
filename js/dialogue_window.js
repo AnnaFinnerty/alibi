@@ -1,5 +1,6 @@
 class DialogueWindow{
-    constructor(mystery,closeCallback,addOccupantCallback,accuseCallback){
+    constructor(game,mystery,closeCallback,addOccupantCallback,accuseCallback){
+        this.game = game;
         this.mystery = mystery;
         this.closeCallback = closeCallback;
         this.addOccupantCallback = addOccupantCallback;
@@ -21,6 +22,7 @@ class DialogueWindow{
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
         document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
         document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)
+        
     }
     build = (suspect,testing) => {
         console.log('building suspect: ' + suspect)
