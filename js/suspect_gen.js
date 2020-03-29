@@ -12,13 +12,28 @@ function generateSuspects(location,mystery){
     }
     // let victim = null;
     let last_suspect = null;
+    let tempPartnerIndex = null;
     const randomDiscover = Math.floor(Math.random()*8)
     for(let i = 0; i < 8; i++){
         //add one to the index of the secret so we can pass it as a true/false value to makeCharacter
         const hasSecret = secrets.indexOf(i) + 1
         //the first person with a secret is guilty
         //they will be the only person in the room with the victim/object at the time of the crime
-        const partner = hasSecret === 3 ? last_suspect : null;
+
+        //okay this parts confusing...
+        //secrets 2 and 3 are partners, but there's no telling which one was randomly chosen selected first
+        //store the index of the first partner to pass through in tempPartnerIndex
+        //when the second partner passes through, use that index to find the partner
+        //we'll set the other partner later
+        let partner = null;
+        if(hasSecret === 3 || hasSecret === 2){
+            if(tempPartnerIndex != null){
+                partner = suspectsArr[tempPartnerIndex]
+                console.log('found my partner',partner)
+            } else {
+                tempPartnerIndex = i;
+            }
+        }
         
         const isHost = i === 0;
         const gender = randomFromArrayAndRemove(gender_assignments)
@@ -42,17 +57,17 @@ function generateSuspects(location,mystery){
         if(relative){
             suspectsArr[i-1]['relative'] = suspect;
         }
-        if(hasSecret === 2){
-            console.log(suspect.name + 'should get a partner later!',partner)
-        }
+        //now go back and update the first partner to be located
         if(partner){
             console.log(suspect.name + ' has a partner',partner)
-            suspectsArr[i-1]['partner'] = suspect;
+            suspectsArr[tempPartnerIndex]['partner'] = suspect;
         }
     }
 
+    
+
     //shuffle suspects and assign some people random roles
-    suspectsArr = shuffle(suspectsArr);
+    // suspectsArr = shuffle(suspectsArr);
 
     const finalSuspects = {}
     //make final dict to retun
