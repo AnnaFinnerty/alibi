@@ -22,7 +22,7 @@ class DialogueWindow{
         document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
         document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)
     }
-    build = (suspect) => {
+    build = (suspect,testing) => {
         console.log('building suspect: ' + suspect)
         console.log(suspect.relation)
         this.suspect = suspect;
@@ -33,6 +33,14 @@ class DialogueWindow{
         }
         if(suspect.relation){
             this.displayElements['relation'].textContent = suspect.relation.name + ", " + suspect.relation.relation;
+        }
+        if(testing){
+            const testArea = document.querySelector('.testing');
+            this.emptyContainer(testArea)
+            const hasSecret = buildObject('div',testArea)
+            hasSecret.textContent = suspect.hasSecret ? "I have a secret" : "I don't have a secret";
+            const secretType = buildObject('div',testArea)
+            secretType.textContent = suspect.hasSecret ? "" : "My secret is...";
         }
         this.updatePanel();
     }

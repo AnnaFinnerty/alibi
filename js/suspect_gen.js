@@ -1,5 +1,6 @@
 function generateSuspects(location,mystery){
     console.log('generating suspects');
+    console.log(mystery)
     victimsPostion['x'] = mystery.victim.locationHistory[0][2]['x'];
     victimsPostion['y'] = mystery.victim.locationHistory[0][2]['y'];
     let suspectsArr = [];
@@ -58,7 +59,21 @@ function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,rela
     // console.log('victims paths', victimsPath)
     console.log('making character!')
     console.log(relative)
-    const trueLocs = this.genPath(location,3,endPosition);
+    //insert the location of the viction at the tod for the murderer
+    //also add the location of the secret rendezous for the pair sharing a secret
+    let insertedLocation = null;
+    let insertedIndex = null;
+    const murderHour = 2;
+    if(hasSecret === 1){
+        //MTC HARDCODED MURDER HOUR
+        insertedLocation = victimsPostion;
+        insertedIndex = murderHour;
+    } else if (hasSecret === 2 && partner){
+        insertedLocation = partner.locationHistory[0][murderHour];
+        insertedIndex = murderHour;
+    }
+
+    const trueLocs = this.genPath2(location,3);
     const locHistory = [trueLocs,trueLocs]
     //assign gender to victims (one is provided for suspects)
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
@@ -75,7 +90,8 @@ function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,rela
     }
 
     let clue = null;
-    if(hasSecret){
+    //the second and third people only have one clue
+    if(hasSecret && hasSecret !== 2){
         clue = {
                     object: randomFromArrayAndRemove(clues),
                     loc: randomFromArray(locHistory[1])
@@ -102,6 +118,35 @@ function genPath(location,segments=3,endPosition){
         console.log(pos)
         path.push(pos)
         testPath.push(pos.x+"_"+pos.y)
+        x = pos.x;
+        y = pos.y;
+        counter++;
+    }
+    //return the path reversed
+    return path.reverse()
+}
+
+function genPath2(location,segments=3,insertPosition,insertIndex){
+    // console.log('generating path',crossoverPaths)
+    //work backwards, creating the path from the final position
+    const start = insertPosition ? insertPosition : randomStartPosition(location);
+    console.log('start',start)
+    const path = [start]
+    const testPath = [];
+    testPath.push(start.x+"_"+start.y)
+    let counter = 0;
+    let x = start.x;
+    let y = start.y;
+    while(counter < segments){
+        const pos = nextPos(location,x,y,testPath);
+        console.log(pos)
+        if(insertPosition && insertIndex && counter > insertIndex){
+            path.unshift(pos)
+            testPath.unshift(pos.x+"_"+pos.y)
+        } else {
+            path.push(pos)
+            testPath.push(pos.x+"_"+pos.y)
+        }
         x = pos.x;
         y = pos.y;
         counter++;

@@ -37,7 +37,7 @@ class Game{
         
         const startHour = Math.floor(Math.random()*13)
         this.currentHour = this.startHour + 2;
-        this.case = buildCase(victim,startHour)
+        this.case = buildCase(this.location,victim,startHour)
         console.log('case',this.case)
 
         this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
@@ -76,6 +76,7 @@ class Game{
     }
     test = () => {
         console.log(this.locationTracker);
+        this.testing = true;
         const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
@@ -144,7 +145,7 @@ class Game{
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
         const suspect = this.suspects[subject];
-        this.dialogueManager.build(suspect);
+        this.dialogueManager.build(suspect,this.testing);
         this.makeMove();
     }
     closeDialogue = () => {
