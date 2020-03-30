@@ -184,23 +184,23 @@ function nextPos(location,currentX,currentY,testPath){
     let possiblePaths = [];
     if(currentX > 0){
         if(location[currentX-1][currentY] !== "empty"){
-            possiblePaths.push({x:currentX-1,y:currentY})
+            possiblePaths.push({x:currentX-1,y:currentY,name:location[currentX-1][currentY]})
         } 
     }
     if(currentX < location.length-1){
         if(location[currentX+1][currentY] !== "empty"){
-            possiblePaths.push({x:currentX+1,y:currentY})
+            possiblePaths.push({x:currentX+1,y:currentY,name:location[currentX+1][currentY]})
         } 
         
     }
     if(currentY > 0){
         if(location[currentX][currentY-1] !== "empty"){
-            possiblePaths.push({x:currentX,y:currentY-1})
+            possiblePaths.push({x:currentX,y:currentY-1,name:location[currentX][currentY-1]})
         } 
     }
     if(currentY < location[0].length-1){
         if(location[currentX][currentY+1] !== "empty"){
-            possiblePaths.push({x:currentX,y:currentY+1})
+            possiblePaths.push({x:currentX,y:currentY+1,name:location[currentX][currentY+1]})
         } 
     }
     const limitedPaths = possiblePaths.filter((path)=> !testPath.includes(path.x+"_"+path.y))

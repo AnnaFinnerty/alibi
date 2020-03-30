@@ -113,7 +113,7 @@ class DialogueWindow{
         this.responsePanel.appendChild(e.target)
         e.target.className = 'question-asked';
         this.suspect.addNote(e.target.textContent);
-        //generate suspects response
+        //generate suspects response by row of question asked
         const suspectResponse = this.suspect.response(e.target.datar)
         const suspectResponseParsed = this.parseText(suspectResponse.text)
         this.suspect.addNote(suspectResponseParsed);
@@ -146,9 +146,9 @@ class DialogueWindow{
         }
         
     }
-    parseText = (text) => {
+    parseText = (text,data) => {
         console.log('parsing text')
-        text = text.replace(/%e|%s/gi, (str)=>{
+        text = text.replace(/%e|%s|%d|%l|%t/gi, (str)=>{
             switch(str){
                 case '%e':
                     return this.mystery.event 
@@ -156,6 +156,15 @@ class DialogueWindow{
                 case '%s':
                     return this.mystery.startHour + ":00"
 
+                case '%t':
+                    return (this.mystery.startHour + this.questionNum)+ ":00"
+
+                case '%l':
+                    return this.suspect.locationHistory[0][this.questionNum]['name']
+
+                case '%d':
+                    return data
+                
                 default:
                     return 'MTC'
             }
