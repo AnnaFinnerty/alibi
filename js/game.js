@@ -67,13 +67,14 @@ class Game{
         console.log('location tracker',this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
-        //run test code
-        // const test_sub = Object.keys(this.suspects)[4]
-        // this.openDialogue(test_sub)
+        
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
+        //run intro
         // this.openMessage([this.case.intro], 2000)
-        this.test();
+
+        //run test code
+        // this.test();
     }
     test = () => {
         console.log('testing');

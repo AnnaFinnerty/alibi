@@ -32,7 +32,7 @@ class Suspect{
         if(questionNum === 2){
             //answering last question in round
             this.questionsInInterview[questionNum] += 1;
-            const responds = Math.random() > .5 && this.openness > 30
+            const responds = Math.random() < (this.openness/100)
             const text = responds ? "I'm happy to tell you" : "I don't know";
             const status = responds ? 400 : 200;
             return {text:text,status:status,question: questionNum}
@@ -44,7 +44,7 @@ class Suspect{
             return {text:"I won't answer any more questions",status:null,question: questionNum}
         } else {
             this.questionsInInterview[questionNum] += 1;
-            const responds = Math.random() > .5 && this.openness > 30
+            const responds = Math.random() < (this.openness/100)
             const text = responds ? "I'm happy to tell you" : "I don't know";
             const status = responds ? 400 : 200;
             return {text:text,status:status,question: questionNum}

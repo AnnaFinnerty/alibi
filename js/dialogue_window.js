@@ -118,8 +118,8 @@ class DialogueWindow{
         response.textContent = suspectResponse.text;
         if(suspectResponse.status === 400){
             //suspect responds with revealing information
-            if(questionRow < 3){
-                const revealedLoc =this.suspect.locationHistory[0][questionRow];
+            if(this.questionNum < 3){
+                const revealedLoc =this.suspect.locationHistory[0][this.questionNum];
                 this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect)
             }
         }
