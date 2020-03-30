@@ -26,16 +26,14 @@ class Suspect{
     }
     response(questionRow){
         console.log(this.name + "  is responding")
-        //find the number of questions already answered in this interview
+        //find the total number of questions already answered in this interview
         const questionNum = this.questionsInInterview.reduce((a, b) => a + b, 0)
         console.log('questionNum', questionNum)
         if(questionNum === 2){
             //answering last question in round
             this.questionsInInterview[questionNum] += 1;
-            const responds = Math.random() < (this.openness/100)
-            const text = responds ? "I'm happy to tell you" : "I don't know";
-            const status = responds ? 400 : 200;
-            return {text:text,status:status,question: questionNum}
+            const response = this.generateResponseText(questionRow,questionNum,400,200);
+            return response
         } else if (questionNum === 3) {
             //answering to follow up for more questions
             //interview over. reset for next interview
@@ -43,12 +41,21 @@ class Suspect{
             this.questionsInInterview = [0,0,0];
             return {text:"I won't answer any more questions",status:null,question: questionNum}
         } else {
+            //generate normal response
             this.questionsInInterview[questionNum] += 1;
-            const responds = Math.random() < (this.openness/100)
-            const text = responds ? "I'm happy to tell you" : "I don't know";
-            const status = responds ? 400 : 200;
-            return {text:text,status:status,question: questionNum}
+            const response = this.generateResponseText(questionRow,questionNum,400,200);
+            return response
         }
+    }
+    generateResponseText(questionRow,questionNum,positiveStatus,negativeStatus){
+        const responseLevel = Math.floor(this.openness/10)
+        const respondsAtAll = Math.random() < (this.openness/100);
+        //find a row of responses from the possible rows of responses in the response dict
+        //MTC WARNINGB hardcorded for now
+        const responseRow = responsePaths[0][0];
+        //if no response is giving, default to the obsfucation row (last row in response table)
+        const text = respondsAtAll ? responses[responseRow][responseLevel] : responses[responses.length-1][responseLevel];
+        return {text:text,status:respondsAtAll? positiveStatus:negativeStatus,question: questionNum}
     }
     accuse(victim){
         this.interviews += 1;

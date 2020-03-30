@@ -95,6 +95,8 @@ class DialogueWindow{
         //start on a different row of questions depending on how many times the suspect has been interviews
         //only show three questions per interview
         for(let i = 0; i < questions[this.startRow + this.questionNum].length; i++){
+            //run questions through text parser, which will dynamically add
+            //this cases' information to the questions
             const nextQuestion = this.parseText(questions[this.startRow + this.questionNum][i]);
             const q = buildObject('div',this.questionPanel,'question-unasked',i)
             q.textContent = nextQuestion
@@ -106,16 +108,17 @@ class DialogueWindow{
         console.log('asking question')
         // const questionRow = e.target.datax;
         const questionRow = e.target.id;
-        this.questionPanel.removeChild(e.target)
+        // this.questionPanel.removeChild(e.target)
+        //append asked question to response panel, change class name and add to suspect's notes
         this.responsePanel.appendChild(e.target)
         e.target.className = 'question-asked';
-        console.log('detective asks: ' + e.target.textContent)
         this.suspect.addNote(e.target.textContent);
+        //generate suspects response
         const suspectResponse = this.suspect.response(e.target.datar)
-        console.log('suspect responds ' + suspectResponse)
-        this.suspect.addNote(suspectResponse.text);
+        const suspectResponseParsed = this.parseText(suspectResponse.text)
+        this.suspect.addNote(suspectResponseParsed);
         const response = buildObject('div',this.responsePanel,'response')
-        response.textContent = suspectResponse.text;
+        response.textContent = suspectResponseParsed;
         if(suspectResponse.status === 400){
             //suspect responds with revealing information
             if(this.questionNum < 3){
