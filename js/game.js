@@ -71,8 +71,8 @@ class Game{
         // this.openDialogue(test_sub)
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
-        this.openMessage([this.case.intro], 2000)
-        // this.test();
+        // this.openMessage([this.case.intro], 2000)
+        this.test();
     }
     test = () => {
         console.log('testing');
@@ -133,9 +133,9 @@ class Game{
     accuseSuspect = () => {
         this.dialogueContainer.className = "hidden";
         const suspect = this.dialogueManager.close();
-        const result = suspect.accuse();
+        const result = suspect.accuse(this.case.victim);
         this.suspects[suspect.name] = suspect;
-        this.openMessage(['You accused ' + suspect.name,result])
+        this.openMessage(['You accused ' + suspect.name,result.text])
         this.render();
     }
     makeMove = () => {

@@ -50,13 +50,19 @@ class Suspect{
             return {text:text,status:status,question: questionNum}
         }
     }
-    accuse(victimLocation){
+    accuse(victim){
         this.interviews += 1;
-        if(this.hasSecret){
-            return "Oh no you discovered my secret"
+        const tod = victim.locationHistory.length - 1;
+        const guiltyTest = this.hasSecret === 1;
+        if(guiltyTest){
+            return {text:"Zounds, you caught me!",status:500}
         } else {
-            this.openness = 0;
-            return "How dare you! I can't believe you accused me!"
+            if(this.hasSecret){
+                return {text:"Oh no you discovered my secret!",status:400}
+            } else {
+                this.openness = 0;
+                return {text:"How dare you, I've done nothing wrong!",status:100}
+            }
         }
     }
     addNote(note){
