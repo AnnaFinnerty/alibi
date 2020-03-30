@@ -6,6 +6,7 @@ class Game{
         //state variables
         // this.isPlayerPlaying = true;
         this.moves = 0;
+        this.accusations = 0;
         this.currentSuspect = null;
         
         //store locations that will be reused multiple times
@@ -135,8 +136,33 @@ class Game{
         const suspect = this.dialogueManager.close();
         const result = suspect.accuse(this.case.victim);
         this.suspects[suspect.name] = suspect;
-        this.openMessage(['You accused ' + suspect.name,result.text])
         this.render();
+        if(result.status === 500){
+            //game won
+            //MTC Add in some timing here
+            this.openMessage(['You accused ' + suspect.name,result.text,"YOU WIN"],1000)
+            this.winGame();
+        } else if (this.accusations === 2) {
+            //accused too many people, no one will talk to you anymore
+            this.openMessage(['You accused ' + suspect.name,result.text,"You've accused too many people","All the suspects have stopped talking to you -- you lose"],1000)
+        } else if (this.accusations === 3){
+            //game still playing
+            if(result.status === 4){
+                // you accused someone who has done something wrong
+                // it's basically a freebie
+                this.openMessage(['You accused ' + suspect.name,result.text,"Guess that wasn't the criminal", "Try again"],1000)
+            } else {
+                this.accusations++;
+                this.openMessage(['You accused ' + suspect.name,result.text,"A bad mistake -- the supects have lost faith in you.", "Try again"],1000)
+                
+            }
+        } 
+    }
+    winGame = () => {
+        this.openMessage(["You win!"])
+    }
+    lostGame = () => {
+        this.openMessage(["You lose!"])
     }
     makeMove = () => {
         this.moves += 1;

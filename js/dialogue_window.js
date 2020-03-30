@@ -89,7 +89,7 @@ class DialogueWindow{
         this.interview();
     }
     interview = () => {
-        console.log('interviewing')
+        console.log('interviewing ' + this.suspect.name + ". Interview:" + this.suspect.interviews)
         emptyContainer(this.questionPanel);
         this.header.textContent = "Interview: " + (this.suspect.interviews+1) + ", Question: " + (this.questionNum+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
