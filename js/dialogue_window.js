@@ -21,8 +21,7 @@ class DialogueWindow{
         //event listeners
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
         document.querySelector('#notes-button').addEventListener('click',()=>this.updatePanel('notes'))
-        document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)
-        
+        document.querySelector('#accuse-button').addEventListener('click',this.accuseCallback)        
     }
     build = (suspect,testing) => {
         console.log('building suspect: ' + suspect)
@@ -77,18 +76,26 @@ class DialogueWindow{
             default:
                 this.questionPanel.className = "half-panel";
                 this.responsePanel.className = "half-panel";
-                this.interview();
+                this.buildInterview();
         }
     }
-    interview = () => {
+    buildInterview = () => {
         console.log('interviewing');
-        const header = buildObject('div',this.questionPanel)
-        header.textContent = "Interview: " + (this.suspect.interviews+1);
+        this.questionNum = 0;
+        this.startRow = this.suspect.interviews % questions.length;
+        this.header = buildObject('div',this.questionPanel)
+        this.header.textContent = "Interview: " + (this.suspect.interviews+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
-        const startRow = this.suspect.interviews % questions.length;
+        this.interview();
+    }
+    interview = () => {
+        console.log('interviewing')
+        emptyContainer(this.questionPanel);
+        this.header.textContent = "Interview: " + (this.suspect.interviews+1) + ", Question: " + (this.questionNum+1);
+        //start on a different row of questions depending on how many times the suspect has been interviews
         //only show three questions per interview
-        for(let i = 0; i < 3; i++){
-            const nextQuestion = questions[startRow+i][this.suspect.answers[startRow+i]]
+        for(let i = 0; i < questions[this.startRow + this.questionNum].length; i++){
+            const nextQuestion = this.parseText(questions[this.startRow + this.questionNum][i]);
             const q = buildObject('div',this.questionPanel,'question-unasked',i)
             q.textContent = nextQuestion
             // q.datax = startRow+i;
@@ -109,20 +116,6 @@ class DialogueWindow{
         this.suspect.addNote(suspectResponse.text);
         const response = buildObject('div',this.responsePanel,'response')
         response.textContent = suspectResponse.text;
-        if(!suspectResponse.status){
-            //suspect refuses to respond further. 
-            ///Close the window and update suspect.
-            console.log('the window should close')
-            this.closeCallback();
-        } else if(suspectResponse.question === 2){
-            //suspect has answered all questions. follow-up?
-            const q1 = buildObject('div',this.questionPanel,'question-unasked')
-            q1.textContent = "Thanks for your time"
-            q1.addEventListener('click',(e)=>this.askQuestion(e))
-            const q2 = buildObject('div',this.questionPanel,'question-unasked')
-            q2.textContent = "Will you answer more questions?"
-            q2.addEventListener('click',(e)=>this.askQuestion(e))
-        }
         if(suspectResponse.status === 400){
             //suspect responds with revealing information
             if(questionRow < 3){
@@ -130,6 +123,41 @@ class DialogueWindow{
                 this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect)
             }
         }
+        if(!suspectResponse.status){
+            //suspect refuses to respond further. 
+            ///Close the window and update suspect.
+            console.log('the window should close')
+            this.closeCallback();
+        } else if(suspectResponse.question === 2){
+            //suspect has answered all questions. follow-up?
+            emptyContainer(this.questionPanel)
+            const q1 = buildObject('div',this.questionPanel,'question-unasked')
+            q1.textContent = "Thanks for your time"
+            q1.addEventListener('click',(e)=>this.askQuestion(e))
+            const q2 = buildObject('div',this.questionPanel,'question-unasked')
+            q2.textContent = "Will you answer more questions?"
+            q2.addEventListener('click',(e)=>this.askQuestion(e))
+        } else {
+            this.questionNum += 1;
+            this.interview();
+        }
+        
+    }
+    parseText = (text) => {
+        console.log('parsing text')
+        text = text.replace(/%e|%s/gi, (str)=>{
+            switch(str){
+                case '%e':
+                    return this.mystery.event 
+
+                case '%s':
+                    return this.mystery.startHour + ":00"
+
+                default:
+                    return 'MTC'
+            }
+        });
+        return text
     }
     viewNotes = () => {
         console.log('viewing notes')

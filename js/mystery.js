@@ -1,8 +1,9 @@
-class Case{
-    constructor(location,victim,startHour,site,type,motive,method,intro){
+class Mystery{
+    constructor(location,victim,startHour,event,site,type,motive,method,intro){
         this.location = location;
         this.victim = victim;
         this.startHour = startHour;
+        this.event = event;
         this.site = site;
         this.crime = type;
         this.motive = motive;
@@ -15,7 +16,15 @@ class Case{
     }
 }
 
-function buildCase(location,victim,startHour){
+function buildCase(location,victim){
+    const startHour = Math.floor(Math.random()*13);
+    const eventTier = startHour < 5 ? 0 : startHour < 10 ? 1: 2;
+    const events = [
+        ['lunch','tea','supper','tennis'],
+        ['dinner','the ball','the party'],
+        ['hunting party','long weekend','cocktails']
+    ]
+    const event = randomFromArray(events[eventTier])
     const locationNameOne = ['Here','Gos','Dun','Abby','Bor'];
     const locationNameTwo = ['ford','mann','wyn','shire','lop'];
     const locationNameThree = ['House','Manor','Park','Castle'];
@@ -23,8 +32,7 @@ function buildCase(location,victim,startHour){
     const type = randomFromArray(['murder']);
     const motive = randomFromArray(['revenge','divorce','inherit','love','madness'])
     const crime = randomFromArray(mysteryDict[type]);
-    
-    const mystery = new Case(location,victim,startHour,site,type,motive,crime.method)
+    const mystery = new Mystery(location,victim,startHour,event,site,type,motive,crime.method)
     const intro = buildIntro(mystery)
     mystery.intro = intro;
     return mystery

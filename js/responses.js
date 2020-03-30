@@ -1,6 +1,12 @@
 
 //row is response type
 //column is personality type
+
+const greetings = [
+    ['Hello'],
+    ['I found the body']
+]
+
 const responses = [
     //direct response
     [],

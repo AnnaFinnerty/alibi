@@ -35,9 +35,9 @@ class Game{
         const victim = makeCharacter(this.location);
         victim.color = "black"
         
-        const startHour = Math.floor(Math.random()*13)
-        this.currentHour = this.startHour + 2;
-        this.case = buildCase(this.location,victim,startHour)
+        // const startHour = Math.floor(Math.random()*13)
+        // this.currentHour = this.startHour + 2;
+        this.case = buildCase(this.location,victim)
         console.log('case',this.case)
 
         this.dialogueManager = new DialogueWindow(this,this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
@@ -72,7 +72,7 @@ class Game{
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
         this.openMessage([this.case.intro], 2000)
-        this.test();
+        // this.test();
     }
     test = () => {
         console.log('testing');
