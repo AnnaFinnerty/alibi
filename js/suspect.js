@@ -32,7 +32,8 @@ class Suspect{
         if(questionNum === 2){
             //answering last question in round
             this.questionsInInterview[questionNum] += 1;
-            const response = this.generateResponseText(questionRow,questionNum,400,200);
+            const postiveStatus = this.hasSecret ? 400 : 500;
+            const response = this.generateResponseText(questionRow,questionNum,postiveStatus,200);
             if(questionRow < 3 && response.status === 400){
                 this.locationHistory[0][questionNum]['known'] = true;
             }
@@ -46,7 +47,9 @@ class Suspect{
         } else {
             //generate normal response
             this.questionsInInterview[questionNum] += 1;
-            const response = this.generateResponseText(questionRow,questionNum,400,200);
+            //everyone with a secret will lie
+            const postiveStatus = this.hasSecret ? 400 : 500;
+            const response = this.generateResponseText(questionRow,questionNum,postiveStatus,200);
             return response
         }
     }

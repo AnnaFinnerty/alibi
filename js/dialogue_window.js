@@ -161,8 +161,8 @@ class DialogueWindow{
         }
         
     }
-    parseText = (text,data) => {
-        text = text.replace(/%e|%s|%d|%l|%t|%v/gi, (str)=>{
+    parseText = (text,status) => {
+        text = text.replace(/%e|%s|%l|%t|%v/gi, (str)=>{
             switch(str){
                 case '%e':
                     return this.mystery.event 
@@ -174,13 +174,10 @@ class DialogueWindow{
                     return (this.mystery.startHour + this.questionNum)+ ":00"
 
                 case '%l':
-                    return this.suspect.locationHistory[0][this.questionNum]['name']
+                    return status === 400 ? this.suspect.locationHistory[1][this.questionNum]['name'] : this.suspect.locationHistory[0][this.questionNum]['name']
 
                 case '%v':
                     return this.mystery.victim.name
-
-                case '%d':
-                    return data
                 
                 default:
                     return 'MTC'

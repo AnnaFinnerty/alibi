@@ -1,6 +1,6 @@
 function generateSuspects(location,mystery){
     console.log('generating suspects');
-    console.log(mystery)
+    // console.log(mystery)
     victimsPostion['x'] = mystery.victim.locationHistory[0][2]['x'];
     victimsPostion['y'] = mystery.victim.locationHistory[0][2]['y'];
     let suspectsArr = [];
@@ -29,7 +29,6 @@ function generateSuspects(location,mystery){
         if(hasSecret === 3 || hasSecret === 2){
             if(tempPartnerIndex != null){
                 partner = suspectsArr[tempPartnerIndex]
-                console.log('found my partner',partner)
             } else {
                 tempPartnerIndex = i;
             }
@@ -59,7 +58,6 @@ function generateSuspects(location,mystery){
         }
         //now go back and update the first partner to be located
         if(partner){
-            console.log(suspect.name + ' has a partner',partner)
             suspectsArr[tempPartnerIndex]['partner'] = suspect;
         }
     }
@@ -79,10 +77,6 @@ function generateSuspects(location,mystery){
 }
 
 function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,relative,local,site){
-    //generate the characters path from the victims path
-    // console.log('victims paths', victimsPath)
-    console.log('making character!')
-    console.log(partner)
     //insert the location of the viction at the tod for the murderer
     //also add the location of the secret rendezous for the pair sharing a secret
     let insertedLocation = null;
