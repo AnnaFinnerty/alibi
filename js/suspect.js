@@ -18,7 +18,7 @@ class Suspect{
         this.partner = partner;
         this.relation = relation;
         this.guilty = null;
-        this.openness = hasSecret ? Math.floor(Math.random()*50)+20 : Math.floor(Math.random()*60)+40;
+        this.openness = hasSecret ? Math.floor(Math.random()*20)+50 : Math.floor(Math.random()*50)+50;
         this.interviews = 0;
         this.questionsInInterview = [0,0,0];
         this.answers = new Array(questions.length).fill(0);

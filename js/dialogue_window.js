@@ -15,9 +15,15 @@ class DialogueWindow{
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
             this.displayElements[this.suspectProps[i]] = el
         }
-        this.timeTable = document.querySelector("#time-table")
         this.questionPanel = document.querySelector("#questions")
         this.responsePanel = document.querySelector("#responses")
+        this.timeTable = document.querySelector("#time-table")
+        //build entries for time table
+        for(let i = 0; i < this.mystery.totalHours; i++){
+            const row = buildObject('div',this.timeTable,"row");
+            const time = buildObject('span',row, "time-label");
+            time.textContent = (this.mystery.startHour + i) + ":00";
+        }
 
         //event listeners
         document.querySelector('#interview-button').addEventListener('click',()=>this.updatePanel('interview'))
@@ -36,6 +42,7 @@ class DialogueWindow{
         if(suspect.relation){
             this.displayElements['relation'].textContent = suspect.relation.name + ", " + suspect.relation.relation;
         }
+        //just stuff to make testing easier
         if(testing){
             const testArea = document.querySelector('.testing');
             this.emptyContainer(testArea)
@@ -81,17 +88,18 @@ class DialogueWindow{
         }
     }
     buildInterview = () => {
-        console.log('interviewing');
+        console.log('building interview');
         this.questionNum = 0;
-        this.startRow = this.suspect.interviews % questions.length;
-        this.header = buildObject('div',this.questionPanel)
-        this.header.textContent = "Interview: " + (this.suspect.interviews+1);
+        // this.startRow = this.suspect.interviews % questions.length;\
+        this.startRow = this.suspect.interviews * 3;
+        console.log('start row',this.startRow);
         //start on a different row of questions depending on how many times the suspect has been interviews
         this.interview();
     }
     interview = () => {
         console.log('interviewing ' + this.suspect.name + ". Interview:" + this.suspect.interviews)
         emptyContainer(this.questionPanel);
+        this.header = buildObject('div',this.questionPanel)
         this.header.textContent = "Interview: " + (this.suspect.interviews+1) + ", Question: " + (this.questionNum+1);
         //start on a different row of questions depending on how many times the suspect has been interviews
         //only show three questions per interview
@@ -148,8 +156,7 @@ class DialogueWindow{
         
     }
     parseText = (text,data) => {
-        console.log('parsing text')
-        text = text.replace(/%e|%s|%d|%l|%t/gi, (str)=>{
+        text = text.replace(/%e|%s|%d|%l|%t|%v/gi, (str)=>{
             switch(str){
                 case '%e':
                     return this.mystery.event 
@@ -162,6 +169,9 @@ class DialogueWindow{
 
                 case '%l':
                     return this.suspect.locationHistory[0][this.questionNum]['name']
+
+                case '%v':
+                    return this.mystery.victim.name
 
                 case '%d':
                     return data

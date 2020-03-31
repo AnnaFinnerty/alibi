@@ -96,7 +96,7 @@ class Game{
         // console.log('clues',clues)
         this.render();
     }
-    searchRoom = (room) => {
+    searchForClues = (room) => {
         console.log('searching room: ' + room.id)
         // console.log(room.datax, room.datay)
         this.makeMove();

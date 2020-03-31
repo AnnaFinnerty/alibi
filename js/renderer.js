@@ -52,7 +52,7 @@ class Renderer{
                 room.datay = y;
                 row.appendChild(room);
                 if(location[x][y].name != "empty"){
-                    room.addEventListener('click',(e)=>this.game.searchRoom(e.currentTarget))
+                    room.addEventListener('click',(e)=>this.game.searchForClues(e.currentTarget))
                 }
                 if(location[x][y].occupants.length){
                     for(let i = 0; i < location[x][y].occupants.length; i++){

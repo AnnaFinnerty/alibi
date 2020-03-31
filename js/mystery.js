@@ -3,6 +3,7 @@ class Mystery{
         this.location = location;
         this.victim = victim;
         this.startHour = startHour;
+        this.totalHours = 3;
         this.event = event;
         this.site = site;
         this.crime = type;

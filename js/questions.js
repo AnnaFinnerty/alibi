@@ -4,7 +4,7 @@ const questions = [
     ["Where did you go later in the evening?", "Where were you at %s?", "Where were you at the time of the murder?"],
     ["Where were you when you learned of the murder?"],
     //victim questions
-    ["When did you last see %v?","Did you see %v in the %r?"],
+    ["When did you last see %v?","Did you see %v in the %l?"],
     ["Where were you when you learned of the murder?"],
     ["Where did you meeet %v", "What was your history with %v?"],
     //other person questions
