@@ -96,6 +96,18 @@ class Game{
         // console.log('clues',clues)
         this.render();
     }
+    searchRoomAtTime = (x,y,t) => {
+        console.log('searching room at a specific time');
+        const suspectsInRoom = []
+        for(let s in this.suspects){
+            if(this.suspects[s].locationHistory[1][t]['x'] === x &&
+               this.suspects[s].locationHistory[1][t]['y'] === y
+              ){
+                suspectsInRoom.push(this.suspects[s]['name'])
+            }
+        }
+        return suspectsInRoom
+    }
     searchForClues = (room) => {
         console.log('searching room: ' + room.id)
         // console.log(room.datax, room.datay)
