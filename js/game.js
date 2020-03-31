@@ -41,7 +41,7 @@ class Game{
         this.case = buildCase(this.location,victim)
         console.log('case',this.case)
 
-        this.dialogueManager = new DialogueWindow(this,this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
+        this.dialogueManager = new DialogueWindow(this,this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect,this.searchRoomAtTime);
 
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)

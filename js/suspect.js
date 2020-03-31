@@ -33,6 +33,9 @@ class Suspect{
             //answering last question in round
             this.questionsInInterview[questionNum] += 1;
             const response = this.generateResponseText(questionRow,questionNum,400,200);
+            if(questionRow < 3 && response.status === 400){
+                this.locationHistory[0][questionNum]['known'] = true;
+            }
             return response
         } else if (questionNum === 3) {
             //answering to follow up for more questions

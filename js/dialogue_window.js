@@ -1,10 +1,11 @@
 class DialogueWindow{
-    constructor(game,mystery,closeCallback,addOccupantCallback,accuseCallback){
+    constructor(game,mystery,closeCallback,addOccupantCallback,accuseCallback,searchRoomAtTimeCallback){
         this.game = game;
         this.mystery = mystery;
         this.closeCallback = closeCallback;
         this.addOccupantCallback = addOccupantCallback;
         this.accuseCallback = accuseCallback;
+        this.searchRoomAtTimeCallback = searchRoomAtTimeCallback;
         this.suspect = null;
         this.panel = "interview";
 
@@ -21,8 +22,11 @@ class DialogueWindow{
         //build entries for time table
         for(let i = 0; i < this.mystery.totalHours; i++){
             const row = buildObject('div',this.timeTable,"row");
-            const time = buildObject('span',row, "time-label");
-            time.textContent = (this.mystery.startHour + i) + ":00";
+            const timeLabel = buildObject('span',row, "time-label");
+            timeLabel.textContent = (this.mystery.startHour + i) + ":00";
+            //these should all be dropdowns
+            const timeEntry = buildObject('span',row, "time-entry","time-entry-"+i);
+            timeEntry.textContent = "?";
         }
 
         //event listeners
@@ -122,17 +126,19 @@ class DialogueWindow{
         this.responsePanel.appendChild(e.target)
         e.target.className = 'question-asked';
         this.suspect.addNote(e.target.textContent);
-        //generate suspects response by row of question asked
+        //generate suspects response based on current question number
         const suspectResponse = this.suspect.response(e.target.datar)
         const suspectResponseParsed = this.parseText(suspectResponse.text)
         this.suspect.addNote(suspectResponseParsed);
         const response = buildObject('div',this.responsePanel,'response')
         response.textContent = suspectResponseParsed;
-        if(suspectResponse.status === 400){
-            //suspect responds with revealing information
+        //suspect responds with revealing information -- a lie or the truth
+        if(suspectResponse.status === 400 || suspectResponse.status === 500){
+            
             if(this.questionNum < 3){
                 const revealedLoc =this.suspect.locationHistory[0][this.questionNum];
-                this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect)
+                document.querySelector("#time-entry-"+this.questionNum).textContent = revealedLoc['name'];
+                this.addOccupantCallback(revealedLoc.x, revealedLoc.y,this.suspect);
             }
         }
         if(!suspectResponse.status){
