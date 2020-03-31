@@ -59,17 +59,22 @@ class Renderer{
                         const time = location[x][y].occupants[i].locationTimes.indexOf(x+"_"+y);
                         if(this.time === 0 || this.time === time){
                             // console.log(location[x][y].occupants[i].locationHistory)
-                            const footprint = buildObject("span",room,"icon-footprint");
+                            const footprint = buildObject("span",room,"footprint icon-footprint tooltip");
                             footprint.style.color = location[x][y].occupants[i].color
                             //don't set the time signal for the victim
                             footprint.textContent = location[x][y].occupants[i].color === "black" ? "" : time;
+                            const tooltip = buildObject("span",footprint,"tooltiptext");
+                            tooltip.textContent = location[x][y].occupants[i].color === "black" ? "Victim:" + location[x][y].occupants[i].name : location[x][y].occupants[i].name + " " + time + ":00";
                         }
                     }
                 }
                 if(location[x][y].clues.length){
                     for(let i = 0; i < location[x][y].clues.length; i++){
-                            const clue = buildObject("span",room,"clue");
-                            clue.textContent = "?"    
+ 
+                            const clue = buildObject("span",room,"clue tooltip");
+                            clue.textContent = "?";
+                            const tooltip = buildObject("span",clue,"tooltiptext");
+                            tooltip.textContent = location[x][y].clues[i]['object'];
                         }
                 }
             }

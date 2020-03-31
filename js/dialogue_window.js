@@ -15,6 +15,7 @@ class DialogueWindow{
             const el = document.querySelector('#suspect-'+this.suspectProps[i]);
             this.displayElements[this.suspectProps[i]] = el
         }
+        this.timeTable = document.querySelector("#time-table")
         this.questionPanel = document.querySelector("#questions")
         this.responsePanel = document.querySelector("#responses")
 
