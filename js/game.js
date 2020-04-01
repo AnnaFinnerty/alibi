@@ -6,6 +6,7 @@ class Game{
         //state variables
         // this.isPlayerPlaying = true;
         this.moves = 0;
+        this.accusations = 0;
         this.currentSuspect = null;
         
         //store locations that will be reused multiple times
@@ -35,12 +36,12 @@ class Game{
         const victim = makeCharacter(this.location);
         victim.color = "black"
         
-        const startHour = Math.floor(Math.random()*13)
-        this.currentHour = this.startHour + 2;
-        this.case = buildCase(victim,startHour)
+        // const startHour = Math.floor(Math.random()*13)
+        // this.currentHour = this.startHour + 2;
+        this.case = buildCase(this.location,victim)
         console.log('case',this.case)
 
-        this.dialogueManager = new DialogueWindow(this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect);
+        this.dialogueManager = new DialogueWindow(this,this.case,this.closeDialogue,this.addOccupant,this.accuseSuspect,this.searchRoomAtTime);
 
         this.suspects = generateSuspects(this.location,this.case);
         console.log('suspects',this.suspects)
@@ -63,19 +64,21 @@ class Game{
         //add victim to the room
   
         this.locationTracker[victim.locationHistory[0][2].x][victim.locationHistory[0][2].y]['occupants'].push(victim)
-        console.log(this.locationTracker)
+        console.log('location tracker',this.locationTracker)
         this.narration = "You and the inspector have been sent on another case"
 
-        //run test code
-        // const test_sub = Object.keys(this.suspects)[4]
-        // this.openDialogue(test_sub)
+        
         this.renderer.setup(this.case,this.locationTracker, this.suspects);
         
-        this.openMessage([this.case.intro], 2000)
-        this.test();
+        //run intro
+        // this.openMessage([this.case.intro], 2000)
+
+        //run test code
+        // this.test();
     }
     test = () => {
-        console.log(this.locationTracker);
+        console.log('testing');
+        this.testing = true;
         const clues = []
         for(let s in this.suspects){
             const suspect = this.suspects[s];
@@ -85,15 +88,27 @@ class Game{
             }
             if(suspect.clue){
                 const clue = suspect.clue;
-                console.log(clue);
+                // console.log(clue);
                 clues.push(clue)
                 this.locationTracker[clue.loc.x][clue.loc.y]['clues'].push(clue);
             }
         }
-        console.log('clues',clues)
+        // console.log('clues',clues)
         this.render();
     }
-    searchRoom = (room) => {
+    searchRoomAtTime = (x,y,t) => {
+        console.log('searching room at a specific time');
+        const suspectsInRoom = []
+        for(let s in this.suspects){
+            if(this.suspects[s].locationHistory[1][t]['x'] === x &&
+               this.suspects[s].locationHistory[1][t]['y'] === y
+              ){
+                suspectsInRoom.push(this.suspects[s]['name'])
+            }
+        }
+        return suspectsInRoom
+    }
+    searchForClues = (room) => {
         console.log('searching room: ' + room.id)
         // console.log(room.datax, room.datay)
         this.makeMove();
@@ -132,19 +147,50 @@ class Game{
     accuseSuspect = () => {
         this.dialogueContainer.className = "hidden";
         const suspect = this.dialogueManager.close();
-        const result = suspect.accuse();
+        const result = suspect.accuse(this.case.victim);
         this.suspects[suspect.name] = suspect;
-        this.openMessage(['You accused ' + suspect.name,result])
         this.render();
+        if(result.status === 500){
+            //game won
+            //MTC Add in some timing here
+            this.openMessage(['You accused ' + suspect.name,result.text,"YOU WIN"],1000)
+            this.winGame();
+        } else if (this.accusations === 2) {
+            //accused too many people, no one will talk to you anymore
+            this.openMessage(['You accused ' + suspect.name,result.text,"You've accused too many people","All the suspects have stopped talking to you -- you lose"],1000)
+        } else if (this.accusations === 3){
+            //game still playing
+            if(result.status === 4){
+                // you accused someone who has done something wrong
+                // it's basically a freebie
+                this.openMessage(['You accused ' + suspect.name,result.text,"Guess that wasn't the criminal", "Try again"],1000)
+            } else {
+                this.accusations++;
+                this.openMessage(['You accused ' + suspect.name,result.text,"A bad mistake -- the supects have lost faith in you.", "Try again"],1000)
+                
+            }
+        } 
+    }
+    winGame = () => {
+        this.openMessage(["You win!"])
+    }
+    lostGame = () => {
+        this.openMessage(["You lose!"])
     }
     makeMove = () => {
         this.moves += 1;
         this.moveCounter.textContent = "Moves: " + this.moves;
     }
+    nextSuspect = () => {
+        console.log('next suspect')
+    }
+    lastSuspect = () => {
+        console.log('next suspect')
+    }
     openDialogue = (subject) => {
         this.dialogueContainer.className = "";
         const suspect = this.suspects[subject];
-        this.dialogueManager.build(suspect);
+        this.dialogueManager.build(suspect,this.testing);
         this.makeMove();
     }
     closeDialogue = () => {
