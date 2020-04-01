@@ -40,6 +40,7 @@ class Suspect{
             return response
         } else if (questionNum === 3) {
             //answering to follow up for more questions
+            
             //interview over. reset for next interview
             this.interviews++;
             this.questionsInInterview = [0,0,0];

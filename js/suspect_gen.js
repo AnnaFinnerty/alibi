@@ -91,7 +91,7 @@ function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,rela
         insertedIndex = murderHour;
     }
 
-    const trueLocs = this.genPath2(location,3);
+    const trueLocs = this.genPath(location,3);
     const locHistory = [trueLocs,trueLocs]
     //assign gender to victims (one is provided for suspects)
     gender = gender ? gender : Math.random() < .5 ? "male" : "female";
@@ -120,33 +120,21 @@ function makeCharacter(location,isHost,endPosition,hasSecret,partner,gender,rela
     return character
 }
 
-// function genPath(location,segments=3,endPosition){
-//     // console.log('generating path',crossoverPaths)
-//     //work backwards, creating the path from the final position
-//     const start = endPosition ? endPosition : randomStartPosition(location);
-//     console.log('start',start)
-//     const path = [start]
-//     const testPath = [];
-//     testPath.push(start.x+"_"+start.y)
-//     let counter = 0;
-//     let x = start.x;
-//     let y = start.y;
-//     while(counter < segments){
-//         const pos = nextPos(location,x,y,testPath);
-//         console.log(pos)
-//         path.push(pos)
-//         testPath.push(pos.x+"_"+pos.y)
-//         x = pos.x;
-//         y = pos.y;
-//         counter++;
-//     }
-//     //return the path reversed
-//     return path.reverse()
-// }
+const body = document.querySelector('body')
+const button = document.querySelector('button')
 
-function genPath2(location,segments=3,insertPosition,insertIndex){
+const fonts = ['Arial','Times New Roman','Helvetica']
+let fontNum = 0
+
+button.addEventListener('click',() => {
+    //advance unless at end of array
+    fontNum = fontNum + 1 > fonts.length - 1 ? 0 : fontNum + 1;
+    body.style.fontFamily = fonts[fontNum];
+})
+
+function genPath(location,segments=3,insertPosition,insertIndex){
     // console.log('generating path',crossoverPaths)
-    //work backwards, creating the path from the final position
+    //start the path from the inserted position
     const start = insertPosition ? insertPosition : randomStartPosition(location);
     // console.log('start',start)
     const path = [start]
@@ -157,7 +145,7 @@ function genPath2(location,segments=3,insertPosition,insertIndex){
     let y = start.y;
     while(counter < segments){
         const pos = nextPos(location,x,y,testPath);
-        if(insertPosition && insertIndex && counter > insertIndex){
+        if(insertPosition && insertIndex && (counter > insertIndex)){
             path.unshift(pos)
             testPath.unshift(pos.x+"_"+pos.y)
         } else {

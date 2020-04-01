@@ -8,9 +8,9 @@ const questions = [
     ["Where were you when you learned of the murder?"],
     ["Where did you meeet %v", "What was your history with %v?"],
     //other person questions
-    ["Did you see %v in the %r?"],
-    ["Where were you when you learned of the murder?"],
-    ["How did you know the victim?"],
+    ["Did you see %o in the %r at %t?"],
+    ["Did you see %o in the %r at %t?"],
+    ["Did you see %o in the %r at %t?"],
     //general questions
     ["How do you know %c"],
     ["What's your profession?"],
